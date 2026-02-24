@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Terminal as TerminalIcon, Minus, Square, X } from "lucide-react"; 
 
-// Apenas os comandos normais aparecem no Autocomplete! Os segredos não estão aqui.
 const AVAILABLE_COMMANDS = [
   "help", 
   "systeminfo", 
@@ -69,20 +68,19 @@ export default function TerminalProfile() {
       } 
       else {
         switch (cmd) {
-          // --- COMANDOS NORMAIS ---
           case "help":
             output = (
               <div className="mt-2 mb-4 whitespace-pre font-mono">
 {`┌────────────────────────────────────────────────────────┐
-│                  COMANDOS DISPONÍVEIS                  │
+│                  AVAILABLE COMMANDS                    │
 ├────────────────────────────────────────────────────────┤
-│  systeminfo  - Mostra informações do sistema           │
-│  skills      - Lista habilidades técnicas detalhadas   │
-│  projects    - Mostra projetos recentes em destaque    │
-│  contact     - Informações de contato profissionais    │
-│  color       - Muda a cor do terminal (ex: color 0a)   │
-│  cls         - Limpa o terminal                        │
-│  help        - Mostra esta lista de comandos           │
+│  systeminfo  - Shows system information                │
+│  skills      - Lists detailed technical skills         │
+│  projects    - Displays featured recent projects       │
+│  contact     - Professional contact information        │
+│  color       - Changes terminal color (e.g. color 0a)  │
+│  cls         - Clears the terminal                     │
+│  help        - Displays this list of commands          │
 └────────────────────────────────────────────────────────┘`}
               </div>
             );
@@ -90,12 +88,12 @@ export default function TerminalProfile() {
           case "skills":
             output = (
               <div className="mt-2 mb-4 whitespace-pre font-mono">
-                <span className="opacity-80">⚡ HABILIDADES TÉCNICAS:</span><br/>
+                <span className="opacity-80">⚡ TECHNICAL SKILLS:</span><br/>
 {`
 ██████████████████████░░ 92% - Tailwind CSS & UI
 ██████████████████████░░ 88% - React & Next.js
 ████████████████████░░░░ 82% - TypeScript
-██████████████████░░░░░░ 75% - Node.js & Auth
+██████████████████░░░░░░ 75% - Node.js Architecture
 █████████████████░░░░░░░ 70% - PostgreSQL
 `}
               </div>
@@ -104,12 +102,12 @@ export default function TerminalProfile() {
           case "projects":
             output = (
               <div className="mt-2 mb-4 whitespace-pre font-mono">
-                <span className="opacity-80">📁 PROJETOS RECENTES:</span><br/>
+                <span className="opacity-80">📁 RECENT PROJECTS:</span><br/>
 {`
-[1] Mind Health         - Plataforma eHealth (Next.js, Arquitetura)
-[2] Aviator Clone Pro   - Simulador / Game Logic (React, Math)
-[3] Candangos Shop      - E-commerce UI/UX (Frontend, Performance)
-[4] Gabriela Decorações - Site Institucional (SEO, Vercel Analytics)
+[1] Mind Health         - E-Health Platform (Next.js, Architecture)
+[2] Aviator Clone Pro   - Real-Time Logic (React, Math)
+[3] Candangos Shop      - E-Commerce UI/UX (Frontend, Performance)
+[4] Gabriela Decorações - SEO & Performance (Vercel Analytics)
 `}
               </div>
             );
@@ -117,11 +115,11 @@ export default function TerminalProfile() {
           case "contact":
             output = (
               <div className="mt-2 mb-4 whitespace-pre font-mono">
-                <span className="opacity-80">📞 INFORMAÇÕES DE CONTATO:</span><br/>
+                <span className="opacity-80">📞 CONTACT INFORMATION:</span><br/>
 {`
 [Github]   github.com/RobsonRodriguess
-[Location] Brasília, DF
-[Status]   Disponível para novos trabaios
+[Location] Brasília, DF - Brazil
+[Status]   Available for new opportunities
 `}
               </div>
             );
@@ -133,8 +131,8 @@ export default function TerminalProfile() {
             output = (
               <div className="mt-2 mb-4">
                 <p>nexus\\robson</p>
-                <p className="mt-2">Role: Desenvolvedor Full Stack & Software Engineer</p>
-                <p>Education: Análise e Desenvolvimento de Sistemas (IFG)</p>
+                <p className="mt-2">Role: Full Stack Developer & Software Engineer</p>
+                <p>Education: Systems Analysis and Development (IFG)</p>
               </div>
             );
             break;
@@ -143,12 +141,11 @@ export default function TerminalProfile() {
             setInput("");
             return;
             
-          // --- EASTER EGGS (COMANDOS SECRETOS) ---
           case "sudo":
           case "sudo su":
             output = (
               <div className="mt-2 mb-4 text-red-500 font-bold">
-                [ERROR] Usuário não está no arquivo sudoers. Este incidente será reportado.
+                [ERROR] User is not in the sudoers file. This incident will be reported.
               </div>
             );
             break;
@@ -169,7 +166,7 @@ export default function TerminalProfile() {
   \\_____________________/
 `}
                 <br/>
-                <span className="text-zinc-300">Transformando cafeína em código... ☕💻</span>
+                <span className="text-zinc-300">Converting caffeine into code... ☕💻</span>
               </div>
             );
             break;
@@ -213,7 +210,6 @@ export default function TerminalProfile() {
           className="rounded-lg overflow-hidden border border-zinc-700 bg-[#0c0c0c] shadow-[0_10px_40px_rgba(0,0,0,0.8)]"
           onClick={handleTerminalClick}
         >
-          {/* Header */}
           <div className="flex items-center justify-between bg-[#1e1e1e] border-b border-black select-none">
             <div className="flex items-center gap-2 px-3 py-2 text-zinc-300 text-xs font-sans">
               <TerminalIcon className="w-4 h-4" />
@@ -232,7 +228,6 @@ export default function TerminalProfile() {
             </div>
           </div>
 
-          {/* Body */}
           <div 
             ref={containerRef}
             className={`p-4 h-[400px] md:h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent text-sm md:text-base cursor-text bg-black ${termColor} transition-colors duration-300`}
@@ -268,15 +263,15 @@ function InitialFetch() {
       <p>Microsoft Windows [Version 10.0.22631.1]</p>
       <p>(c) Microsoft Corporation. All rights reserved.</p>
       <br/>
-      <p>Host Name:                 NEXUS-TERMINAL</p>
-      <p>OS Name:                   Microsoft Windows 11 Pro</p>
-      <p>Registered Owner:          Robson Rodrigues</p>
-      <p>System Manufacturer:       Full Stack Web Dev</p>
-      <p>System Type:               x64-based PC</p>
-      <p>Processor(s):              1 Processor(s) Installed.</p>
-      <p>                           [01]: Intel64 Family 6 Model Core i9</p>
-      <p>Total Physical Memory:     32,768 MB</p>
-      <p>Tech Stack:                React, Next.js, Node.js, TypeScript, NestJS</p>
+      <p>Host Name:                NEXUS-TERMINAL</p>
+      <p>OS Name:                  Microsoft Windows 11 Pro</p>
+      <p>Registered Owner:         Robson Rodrigues</p>
+      <p>System Manufacturer:      Full Stack Web Dev</p>
+      <p>System Type:              x64-based PC</p>
+      <p>Processor(s):             1 Processor(s) Installed.</p>
+      <p>                          [01]: Intel64 Family 6 Model Core i9</p>
+      <p>Total Physical Memory:    32,768 MB</p>
+      <p>Tech Stack:               React, Next.js, Node.js, TypeScript, NestJS</p>
       <br/>
       <p className="opacity-70">💡 Tip: Type 'help' to see commands. Use TAB to autocomplete.</p>
     </div>

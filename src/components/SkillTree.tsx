@@ -12,11 +12,11 @@ const skills = [
     currentXp: "17.600",
     maxXp: "20.000",
     icon: Atom,
-    color: "from-orange-500 to-yellow-500",
-    shadow: "shadow-[0_0_15px_rgba(249,115,22,0.4)]",
-    border: "border-orange-500/40",
-    textTier: "text-orange-400",
-    bgTier: "bg-orange-500/10",
+    color: "from-[#61DAFB] to-white",
+    shadow: "shadow-[0_0_15px_rgba(97,218,251,0.4)]",
+    border: "border-[#61DAFB]/40",
+    textTier: "text-[#61DAFB]",
+    bgTier: "bg-[#61DAFB]/10",
   },
   {
     id: 2,
@@ -26,11 +26,11 @@ const skills = [
     currentXp: "18.400",
     maxXp: "20.000",
     icon: Palette,
-    color: "from-pink-500 to-rose-500",
-    shadow: "shadow-[0_0_15px_rgba(236,72,153,0.4)]",
-    border: "border-pink-500/40",
-    textTier: "text-pink-400",
-    bgTier: "bg-pink-500/10",
+    color: "from-[#06B6D4] to-cyan-200",
+    shadow: "shadow-[0_0_15px_rgba(6,182,212,0.4)]",
+    border: "border-[#06B6D4]/40",
+    textTier: "text-[#06B6D4]",
+    bgTier: "bg-[#06B6D4]/10",
   },
   {
     id: 3,
@@ -40,25 +40,25 @@ const skills = [
     currentXp: "16.400",
     maxXp: "20.000",
     icon: FileCode2,
-    color: "from-purple-500 to-indigo-500",
-    shadow: "shadow-[0_0_15px_rgba(168,85,247,0.4)]",
-    border: "border-purple-500/40",
-    textTier: "text-purple-400",
-    bgTier: "bg-purple-500/10",
+    color: "from-[#3178C6] to-blue-400",
+    shadow: "shadow-[0_0_15px_rgba(49,120,198,0.4)]",
+    border: "border-[#3178C6]/40",
+    textTier: "text-[#3178C6]",
+    bgTier: "bg-[#3178C6]/10",
   },
   {
     id: 4,
-    name: "Node.js & Auth",
+    name: "Node.js Architecture",
     tier: "EPIC",
     level: 75,
     currentXp: "15.000",
     maxXp: "20.000",
     icon: ShieldAlert,
-    color: "from-violet-500 to-fuchsia-500",
-    shadow: "shadow-[0_0_15px_rgba(139,92,246,0.4)]",
-    border: "border-violet-500/40",
-    textTier: "text-violet-400",
-    bgTier: "bg-violet-500/10",
+    color: "from-[#339933] to-green-400",
+    shadow: "shadow-[0_0_15px_rgba(51,153,51,0.4)]",
+    border: "border-[#339933]/40",
+    textTier: "text-[#339933]",
+    bgTier: "bg-[#339933]/10",
   },
   {
     id: 5,
@@ -68,11 +68,11 @@ const skills = [
     currentXp: "14.000",
     maxXp: "20.000",
     icon: Database,
-    color: "from-teal-400 to-emerald-400",
-    shadow: "shadow-[0_0_15px_rgba(45,212,191,0.4)]",
-    border: "border-teal-500/40",
-    textTier: "text-teal-400",
-    bgTier: "bg-teal-500/10",
+    color: "from-[#4169E1] to-blue-300",
+    shadow: "shadow-[0_0_15px_rgba(65,105,225,0.4)]",
+    border: "border-[#4169E1]/40",
+    textTier: "text-[#4169E1]",
+    bgTier: "bg-[#4169E1]/10",
   },
   {
     id: 6,
@@ -82,11 +82,11 @@ const skills = [
     currentXp: "13.000",
     maxXp: "20.000",
     icon: Terminal,
-    color: "from-cyan-400 to-blue-500",
-    shadow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]",
-    border: "border-cyan-500/40",
-    textTier: "text-cyan-400",
-    bgTier: "bg-cyan-500/10",
+    color: "from-[#E0234E] to-rose-400",
+    shadow: "shadow-[0_0_15px_rgba(224,35,78,0.4)]",
+    border: "border-[#E0234E]/40",
+    textTier: "text-[#E0234E]",
+    bgTier: "bg-[#E0234E]/10",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function SkillTree() {
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-7xl font-black tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 drop-shadow-[0_0_10px_rgba(192,132,252,0.3)]"
+            className="text-5xl md:text-7xl font-black tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-zinc-300 to-zinc-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
           >
             SKILL TREE
           </motion.h2>
@@ -111,7 +111,7 @@ export default function SkillTree() {
             transition={{ delay: 0.2 }}
             className="text-zinc-400 tracking-widest text-sm md:text-base uppercase font-medium"
           >
-            &gt; Habilidades de Nível Máximo Desbloqueadas
+            &gt; MAX LEVEL ABILITIES UNLOCKED
           </motion.p>
         </div>
 
@@ -147,7 +147,6 @@ export default function SkillTree() {
                   </div>
                 </div>
 
-                {/* AREA DA BARRA DE XP ARRUMADA */}
                 <div className="relative mt-4">
                   <div className="w-full h-3 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
                     <motion.div 
@@ -162,14 +161,13 @@ export default function SkillTree() {
                   </div>
                   
                   <div className="flex justify-between mt-3 text-[10px] md:text-xs font-mono uppercase font-bold tracking-widest">
-                    <span className="text-zinc-500">Nível {skill.level}/100</span>
+                    <span className="text-zinc-500">LEVEL {skill.level}/100</span>
                     <span className={skill.textTier}>
                       {skill.currentXp} <span className="text-zinc-500">/ {skill.maxXp} XP</span>
                     </span>
                   </div>
                 </div>
 
-                {/* Detalhes de borda Cyberpunk */}
                 <div className={`absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 rounded-tl-lg opacity-50 ${skill.border}`}></div>
                 <div className={`absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 rounded-br-lg opacity-50 ${skill.border}`}></div>
               </motion.div>
