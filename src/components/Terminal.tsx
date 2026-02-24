@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Terminal as TerminalIcon, Minus, Square, X } from "lucide-react"; 
+import { useSound } from "./SoundContext";
 
 const AVAILABLE_COMMANDS = [
   "help", "systeminfo", "skills", "projects", "contact", "whoami", "dir", "cls", "color 0a", "color 07"
@@ -11,11 +12,11 @@ const AVAILABLE_COMMANDS = [
 export default function TerminalProfile() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<React.ReactNode[]>([<InitialFetch key="init" />]);
-  // Cor padrão adaptada para light/dark mode
   const [termColor, setTermColor] = useState("text-zinc-800 dark:text-[#cccccc]"); 
   
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { playClick } = useSound();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -28,6 +29,8 @@ export default function TerminalProfile() {
   };
 
   const handleCommand = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    playClick();
+
     if (e.key === "Tab") {
       e.preventDefault(); 
       const currentInput = input.trim().toLowerCase();
@@ -45,11 +48,9 @@ export default function TerminalProfile() {
       if (cmd.startsWith("color")) {
         const colorCode = cmd.split(" ")[1];
         if (colorCode === "0a" || colorCode === "a") {
-          // Verde Matrix (fica bom nos dois modos)
           setTermColor("text-[#00ff00]");
           output = "";
         } else if (colorCode === "07" || colorCode === "7") {
-          // Volta para a cor padrão adaptável
           setTermColor("text-zinc-800 dark:text-[#cccccc]");
           output = "";
         } else {

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, ExternalLink, CheckCircle2, Copy, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone } from "lucide-react";
 import Image from "next/image";
+import { Tilt } from 'react-tilt';
 
 import { 
   SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, 
@@ -19,6 +20,7 @@ import FloatingSpotify from "@/components/FloatingSpotify";
 import SpotifyCard from "@/components/SpotifyCard";
 import GithubStats from "@/components/GithubStats";
 import Timeline from "@/components/Timeline";
+import { useSound } from "@/components/SoundContext";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -26,7 +28,7 @@ const techs = [
   { name: "TYPESCRIPT", icon: SiTypescript, color: "hover:text-[#3178C6]" },
   { name: "NODE.JS", icon: SiNodedotjs, color: "hover:text-[#339933]" },
   { name: "LUA", icon: SiLua, color: "hover:text-[#2C2D72]" },
-  { name: "ROBLOX", icon: SiRoblox, color: "hover:text-black dark:hover:text-[#FFFFFF]" },
+  { name: "ROBLOX STUDIO", icon: SiRoblox, color: "hover:text-black dark:hover:text-[#FFFFFF]" },
   { name: "JAVA", icon: FaJava, color: "hover:text-[#5382A1]" },
   { name: "PYTHON", icon: SiPython, color: "hover:text-[#3776AB]" },
   { name: "NESTJS", icon: SiNestjs, color: "hover:text-[#E0234E]" },
@@ -118,9 +120,24 @@ const projects = [
   },
 ];
 
+const tiltOptions = {
+  reverse: false,
+  max: 15,
+  perspective: 1000,
+  scale: 1.02,
+  speed: 1000,
+  transition: true,
+  axis: null,
+  reset: true,
+  easing: "cubic-bezier(.03,.98,.52,.99)",
+  glare: true,
+  "max-glare": 0.2,
+};
+
 export default function Portfolio() {
   const [formState, setFormState] = useState<"idle" | "loading" | "success">("idle");
   const [copied, setCopied] = useState(false);
+  const { playHover, playClick } = useSound();
 
   const discordID = "409017051223556121";
 
@@ -176,6 +193,8 @@ export default function Portfolio() {
             <motion.a 
               href="/curriculorobson2026.pdf"
               target="_blank"
+              onMouseEnter={playHover}
+              onClick={playClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="group relative inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full font-black uppercase tracking-widest text-xs md:text-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.15)] hover:shadow-green-500/20 dark:hover:shadow-green-500/30 transition-all duration-300"
@@ -220,10 +239,7 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
-            
-            <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-700 mt-8 font-black">
-              Modern Technologies Expert
-            </p>
+          
           </motion.div>
 
         </motion.div>
@@ -240,14 +256,16 @@ export default function Portfolio() {
               const isEven = index % 2 === 0;
               return (
                 <motion.div key={project.id} initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, ease: "easeOut" }} className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-12 md:gap-24`}>
-                  <div className="w-full md:w-3/5 group">
-                    <div className={`relative w-full aspect-video rounded-2xl overflow-hidden border ${project.neonBorder} bg-white dark:bg-zinc-900/50 p-2 md:p-3 ${project.neonShadow} transition-all duration-700 hover:scale-[1.01]`}>
-                      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 rounded-tl-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
-                      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 rounded-br-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
-                      <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
-                        <Image src={project.image} alt={project.title} fill className="object-cover object-top grayscale-[60%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" />
+                  <div className="w-full md:w-3/5 group cursor-pointer">
+                    <Tilt options={tiltOptions}>
+                      <div className={`relative w-full aspect-video rounded-2xl overflow-hidden border ${project.neonBorder} bg-white dark:bg-zinc-900/50 p-2 md:p-3 ${project.neonShadow} transition-all duration-700`}>
+                        <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 rounded-tl-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
+                        <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 rounded-br-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
+                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
+                          <Image src={project.image} alt={project.title} fill className="object-cover object-top grayscale-[60%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" />
+                        </div>
                       </div>
-                    </div>
+                    </Tilt>
                   </div>
                   <div className="w-full md:w-2/5 flex flex-col justify-center">
                     <h3 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-black dark:text-zinc-100">{project.title}</h3>
@@ -269,6 +287,8 @@ export default function Portfolio() {
                       href={project.link} 
                       target="_blank" 
                       rel="noopener noreferrer"
+                      onMouseEnter={playHover}
+                      onClick={playClick}
                       className="group/btn inline-flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-100 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
                     >
                       {project.isLive ? "View Live Project" : "View Source Code"}
@@ -327,15 +347,15 @@ export default function Portfolio() {
               <div className="space-y-6">
                 <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-700">Where to find me/</h4>
                 <div className="flex flex-wrap gap-6 text-zinc-600 dark:text-zinc-400 font-mono text-sm">
-                  <a href="https://github.com/RobsonRodriguess" target="_blank" className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group">
+                  <a href="https://github.com/RobsonRodriguess" target="_blank" onMouseEnter={playHover} onClick={playClick} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group">
                     <span className="w-1 h-1 bg-zinc-400 dark:bg-zinc-800 group-hover:bg-green-500 transition-colors"></span> Github
                   </a>
-                  <a href="https://www.linkedin.com/in/robson-rodrigues-dev/" target="_blank" className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group">
+                  <a href="https://www.linkedin.com/in/robson-rodrigues-dev/" target="_blank" onMouseEnter={playHover} onClick={playClick} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group">
                     <span className="w-1 h-1 bg-zinc-400 dark:bg-zinc-800 group-hover:bg-green-500 transition-colors"></span> LinkedIn
                   </a>
-                  <button onClick={handleCopyDiscord} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 group relative">
+                  <button onClick={() => { handleCopyDiscord(); playClick(); }} onMouseEnter={playHover} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 group relative">
                     <span className="w-1 h-1 bg-zinc-400 dark:bg-zinc-800 group-hover:bg-indigo-500 transition-colors"></span> 
-                    {copied ? "ID Copied!" : "Discord"} <Copy className={`w-3 h-3 ${copied ? 'hidden' : 'block'}`} />
+                    {copied ? "ID Copiado!" : "Discord"} <Copy className={`w-3 h-3 ${copied ? 'hidden' : 'block'}`} />
                   </button>
                 </div>
               </div>
@@ -349,19 +369,19 @@ export default function Portfolio() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Name</label>
-                          <input type="text" name="name" required placeholder="Your name" className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm" />
+                          <input type="text" name="name" required placeholder="Your name" onFocus={playClick} className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Email</label>
-                          <input type="email" name="email" required placeholder="your@email.com" className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm" />
+                          <input type="email" name="email" required placeholder="your@email.com" onFocus={playClick} className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm" />
                         </div>
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Message</label>
-                        <textarea name="message" required rows={4} placeholder="How can I help with your project?" className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm resize-none"></textarea>
+                        <textarea name="message" required rows={4} placeholder="How can I help with your project?" onFocus={playClick} className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-700 focus:outline-none focus:border-green-500/50 transition-colors font-mono text-sm resize-none"></textarea>
                       </div>
-                      <button type="submit" disabled={formState === "loading"} className="w-full py-5 bg-green-500 disabled:bg-zinc-400 dark:disabled:bg-zinc-700 text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 shadow-[0_10px_30px_rgba(34,197,94,0.1)]">
-                        {formState === "loading" ? "SENDING..." : "Send Professional Message"}
+                      <button type="submit" disabled={formState === "loading"} onMouseEnter={playHover} onClick={playClick} className="w-full py-5 bg-green-500 disabled:bg-zinc-400 dark:disabled:bg-zinc-700 text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 shadow-[0_10px_30px_rgba(34,197,94,0.1)]">
+                        {formState === "loading" ? "SENDING..." : "Send Message"}
                       </button>
                     </form>
                   </motion.div>
@@ -370,7 +390,7 @@ export default function Portfolio() {
                     <CheckCircle2 className="w-16 h-16 text-green-500 mb-6" />
                     <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-2 uppercase">Email sent!</h3>
                     <p className="text-zinc-600 dark:text-zinc-400 font-mono text-sm max-w-[280px]">Your message was successfully received. I will get back to you shortly.</p>
-                    <button onClick={() => setFormState("idle")} className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors">Send another message</button>
+                    <button onClick={() => { setFormState("idle"); playClick(); }} className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors">Send another message</button>
                   </motion.div>
                 )}
               </AnimatePresence>

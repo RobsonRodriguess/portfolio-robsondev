@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
+import { SoundProvider } from "@/components/SoundContext"; // NOVO IMPORT
+import SoundToggle from "@/components/SoundToggle"; // NOVO IMPORT
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,8 +27,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <ThemeToggle />
-          {children}
+          <SoundProvider> {/* 🔥 ENVOLVEU COM O SOUND PROVIDER */}
+            <ThemeToggle />
+            <SoundToggle /> {/* 🔥 ADICIONOU O BOTÃO DE SOM */}
+            {children}
+          </SoundProvider>
         </ThemeProvider>
       </body>
     </html>
