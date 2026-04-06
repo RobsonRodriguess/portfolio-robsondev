@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import GlitchTitle from "@/components/GlitchTitle";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { Github, ExternalLink, CheckCircle2, Copy, Send, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone, Gamepad2, ArrowUpRight, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import {
-  SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, 
-  SiLua, SiRoblox, SiNestjs, SiPostgresql, 
-  SiTailwindcss, SiDocker, SiPython, 
+  SiReact, SiNextdotjs, SiTypescript, SiNodedotjs,
+  SiLua, SiRoblox, SiNestjs, SiPostgresql,
+  SiTailwindcss, SiDocker, SiPython,
   SiMysql, SiGit, SiNginx, SiPrisma, SiVercel, SiSupabase
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
@@ -20,8 +20,12 @@ import SpotifyCard from "@/components/SpotifyCard";
 import GithubStats from "@/components/GithubStats";
 import Timeline from "@/components/Timeline";
 import { useSound } from "@/components/SoundContext";
+import { useLanguage } from "@/components/LanguageContext";
 import SpaceShooter from "@/components/SpaceShooter";
 import LoadingScreen from "@/components/LoadingScreen";
+import ParticleBackground from "@/components/ParticleBackground";
+import StatsSection from "@/components/StatsSection";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -58,12 +62,9 @@ const tagData: { [key: string]: { icon: React.ElementType; color: string } } = {
   "Responsive": { icon: MonitorSmartphone, color: "hover:text-indigo-500 dark:hover:text-indigo-400 border-indigo-500 dark:border-indigo-400" },
 };
 
-const projects = [
+const projectMeta = [
   {
     id: 1,
-    title: "Mind Health",
-    category: "E-HEALTH PLATFORM",
-    description: "Robust architecture for psychological support. Hyper-focused on sensitive data security, complex role management, and academic rigor in backend development.",
     tags: ["Next.js", "Node.js Architecture", "Security"],
     color: "bg-sky-500",
     textColor: "text-sky-600 dark:text-sky-400",
@@ -76,9 +77,6 @@ const projects = [
   },
   {
     id: 2,
-    title: "Aviator Clone Pro",
-    category: "REAL-TIME LOGIC",
-    description: "Real-time probability simulator with an extreme focus on mathematical modeling and backend logic. Features a transparent, high-frequency multiplier calculation system.",
     tags: ["React Advanced", "Game Loop Logic", "Math"],
     color: "bg-emerald-500",
     textColor: "text-emerald-600 dark:text-emerald-400",
@@ -91,9 +89,6 @@ const projects = [
   },
   {
     id: 3,
-    title: "Candangos Shop",
-    category: "E-COMMERCE UI/UX",
-    description: "Digital storefront strictly focused on the user journey. Features dynamic product filtering, an optimized shopping cart state, and high-performance responsive UI.",
     tags: ["Frontend UX/UI", "Tailwind CSS", "Performance"],
     color: "bg-purple-500",
     textColor: "text-purple-600 dark:text-purple-400",
@@ -106,9 +101,6 @@ const projects = [
   },
   {
     id: 4,
-    title: "Gabriela Decorações",
-    category: "SEO & PERFORMANCE",
-    description: "Production-ready platform delivered with a heavy focus on Search Engine Optimization (SEO), Core Web Vitals, and active traffic monitoring analytics.",
     tags: ["SEO Technical", "Vercel Analytics", "Responsive"],
     color: "bg-orange-500",
     textColor: "text-orange-600 dark:text-orange-400",
@@ -128,6 +120,9 @@ export default function Portfolio() {
   const [showGame, setShowGame] = useState(false);
   const [activeProject, setActiveProject] = useState(0);
   const { playHover, playClick } = useSound();
+  const { t, lang } = useLanguage();
+  const { scrollYProgress: globalScroll } = useScroll();
+  const scaleX = useSpring(globalScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Konami Code Easter Egg
   useEffect(() => {
@@ -161,21 +156,27 @@ export default function Portfolio() {
     setFormState("loading");
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "03d48945-cadb-4ede-ab70-925bc6f5444f");
-
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+        }),
       });
 
       if (res.ok) {
         setFormState("success");
         (e.target as HTMLFormElement).reset();
+      } else {
+        setFormState("idle");
+        alert(lang === 'pt' ? 'Erro ao enviar. Tente novamente.' : 'Error sending. Please try again.');
       }
-    } catch (err) {
+    } catch {
       setFormState("idle");
-      alert("Error sending. Please try again.");
+      alert(lang === 'pt' ? 'Erro ao enviar. Tente novamente.' : 'Error sending. Please try again.');
     }
   }
 
@@ -193,11 +194,19 @@ export default function Portfolio() {
       >
       <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
+      <ParticleBackground />
+
+      {/* Scroll progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-sky-500 to-purple-500 origin-left z-[100] rounded-full shadow-[0_0_12px_rgba(34,197,94,0.4)]"
+        style={{ scaleX, opacity: globalScroll }}
+      />
+
       <section className="min-h-screen w-full flex flex-col items-center justify-center relative z-10 px-6 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-zinc-300/50 dark:bg-zinc-800/20 blur-[150px] rounded-full pointer-events-none animate-pulse duration-[7000ms]"></div>
         <motion.div className="relative z-20 text-center flex flex-col items-center w-full max-w-7xl">
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-zinc-600 dark:text-zinc-400 uppercase tracking-[0.2em] text-sm md:text-base mb-8 font-mono">
-            <span className="text-sky-500 dark:text-sky-400 mr-2">&lt;</span>Software Engineer & Frontend<span className="text-sky-500 dark:text-sky-400 ml-2">/&gt;</span>
+            <span className="text-sky-500 dark:text-sky-400 mr-2">&lt;</span>{t.hero_badge}<span className="text-sky-500 dark:text-sky-400 ml-2">/&gt;</span>
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -208,13 +217,13 @@ export default function Portfolio() {
             <GlitchTitle />
           </motion.h1>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mb-12"
           >
-            <motion.a 
+            <motion.a
               href="/curriculorobson2026.pdf"
               target="_blank"
               onMouseEnter={playHover}
@@ -224,11 +233,11 @@ export default function Portfolio() {
               className="group relative inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full font-black uppercase tracking-widest text-xs md:text-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.15)] hover:shadow-green-500/20 dark:hover:shadow-green-500/30 transition-all duration-300"
             >
               <span className="absolute inset-0 rounded-full border border-zinc-700 dark:border-zinc-200 opacity-50 group-hover:border-green-500 transition-colors duration-300"></span>
-              View Resume
+              {t.resume_btn}
               <svg className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
             </motion.a>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -263,7 +272,7 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
-          
+
           </motion.div>
 
         </motion.div>
@@ -272,7 +281,7 @@ export default function Portfolio() {
       <section className="relative z-20 py-20 bg-zinc-50 dark:bg-[#0a0a0a] transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="mb-20 md:mb-32">
-            <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">Selected <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">Works.</span></h2>
+            <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">{t.works_title} <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">{t.works_label}</span></h2>
             <div className="w-24 h-1 bg-zinc-300 dark:bg-zinc-800 mt-8 transition-colors duration-500"></div>
           </motion.div>
 
@@ -286,7 +295,7 @@ export default function Portfolio() {
             <span className="text-6xl md:text-8xl font-black text-zinc-200 dark:text-zinc-800 font-mono">{String(activeProject + 1).padStart(2, "0")}</span>
             <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
             <span className="text-zinc-400 dark:text-zinc-600 font-mono text-xs uppercase tracking-widest">
-              {activeProject + 1} / {projects.length}
+              {activeProject + 1} / {projectMeta.length}
             </span>
           </motion.div>
 
@@ -308,22 +317,22 @@ export default function Portfolio() {
                 {/* Category badge */}
                 <div className="absolute top-6 left-6 z-10">
                   <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
-                    {projects[activeProject].category}
+                    {t.projects[String(projectMeta[activeProject].id)].category}
                   </span>
                 </div>
 
                 {/* Live/Source badge */}
                 <div className="absolute top-6 right-6 z-10">
                   <span className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${projects[activeProject].isLive ? "bg-green-400 animate-pulse" : "bg-zinc-500"}`} />
-                    {projects[activeProject].isLive ? "LIVE" : "SOURCE"}
+                    <span className={`w-1.5 h-1.5 rounded-full ${projectMeta[activeProject].isLive ? "bg-green-400 animate-pulse" : "bg-zinc-500"}`} />
+                    {projectMeta[activeProject].isLive ? t.live : t.source}
                   </span>
                 </div>
 
                 <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
                   <Image
-                    src={projects[activeProject].image}
-                    alt={projects[activeProject].title}
+                    src={projectMeta[activeProject].image}
+                    alt={t.projects[String(projectMeta[activeProject].id)].title}
                     fill
                     className="object-cover object-top grayscale-[30%] hover:grayscale-0 transition-all duration-1000"
                   />
@@ -348,15 +357,15 @@ export default function Portfolio() {
                 {/* Title + description */}
                 <div className="lg:col-span-2">
                   <h3 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter text-black dark:text-zinc-100">
-                    {projects[activeProject].title}
+                    {t.projects[String(projectMeta[activeProject].id)].title}
                   </h3>
                   <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg font-light leading-relaxed max-w-2xl">
-                    {projects[activeProject].description}
+                    {t.projects[String(projectMeta[activeProject].id)].description}
                   </p>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mt-6">
-                    {projects[activeProject].tags.map((tag) => {
+                    {projectMeta[activeProject].tags.map((tag) => {
                       const tagInfo = tagData[tag];
                       if (!tagInfo)
                         return <span key={tag} className="px-3 py-1.5 text-[10px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-full uppercase tracking-wider">{tag}</span>;
@@ -374,15 +383,15 @@ export default function Portfolio() {
                 {/* Action + link */}
                 <div className="flex flex-col justify-end items-start lg:items-end lg:text-right">
                   <a
-                    href={projects[activeProject].link}
+                    href={projectMeta[activeProject].link}
                     target="_blank"
                     rel="noopener noreferrer"
                     onMouseEnter={playHover}
                     onClick={playClick}
                     className="group/btn inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-100 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
                   >
-                    {projects[activeProject].isLive ? "Visit Live Site" : "View on GitHub"}
-                    {projects[activeProject].isLive ? (
+                    {projectMeta[activeProject].isLive ? t.visit_live : t.view_source}
+                    {projectMeta[activeProject].isLive ? (
                       <ExternalLink className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
                     ) : (
                       <Github className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
@@ -395,7 +404,7 @@ export default function Portfolio() {
 
           {/* Project navigator */}
           <div className="flex items-center gap-3 flex-wrap justify-center">
-            {projects.map((project, i) => (
+            {projectMeta.map((project, i) => (
               <motion.button
                 key={project.id}
                 onClick={() => { setActiveProject(i); playClick(); }}
@@ -413,7 +422,7 @@ export default function Portfolio() {
                     ? "text-zinc-900 dark:text-zinc-100"
                     : "text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"
                 }`}>
-                  {project.title}
+                  {t.projects[String(project.id)].title}
                 </span>
                 {i === activeProject && (
                   <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
@@ -424,6 +433,7 @@ export default function Portfolio() {
         </div>
       </section>
 
+      <StatsSection />
       <TerminalProfile />
       <Timeline />
       <SkillTree />
@@ -431,11 +441,7 @@ export default function Portfolio() {
       <section className="py-24 bg-zinc-50 dark:bg-[#0a0a0a] relative z-20 overflow-hidden transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6">
           <div className="relative group bg-gradient-to-br from-white/40 to-zinc-200/40 dark:from-zinc-900/40 dark:to-black/40 p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-zinc-300/50 dark:border-white/5 backdrop-blur-3xl overflow-hidden transition-colors duration-500">
-
-            {/* Animated gradient border on hover */}
             <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-r from-green-500/0 via-green-500/0 to-green-500/0 group-hover:from-green-500/20 group-hover:via-sky-500/20 group-hover:to-purple-500/20 transition-all duration-1000" />
-
-            {/* Floating music notes background */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {["♪", "♫", "♬", "♩", "♪"].map((note, i) => (
                 <motion.div
@@ -466,88 +472,62 @@ export default function Portfolio() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-              {/* Left content */}
               <div className="relative z-10">
-                {/* Sound wave indicator */}
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex items-center gap-3 mb-8">
                   <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                   </span>
-                  {/* Mini equalizer bars */}
                   <div className="flex items-end gap-[3px] h-4">
                     {[0, 1, 2, 3, 4].map((bar) => (
                       <motion.div
                         key={bar}
                         className="w-[3px] rounded-full bg-green-500/70"
-                        animate={{
-                          height: [6, 12 + bar * 3, 6],
-                        }}
-                        transition={{
-                          duration: 0.8 + bar * 0.15,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: bar * 0.1,
-                        }}
+                        animate={{ height: [6, 12 + bar * 3, 6] }}
+                        transition={{ duration: 0.8 + bar * 0.15, repeat: Infinity, ease: "easeInOut", delay: bar * 0.1 }}
                       />
                     ))}
                   </div>
-                  <span className="text-green-500 font-mono text-[10px] uppercase tracking-widest">In the zone</span>
+                  <span className="text-green-500 font-mono text-[10px] uppercase tracking-widest">{t.in_zone}</span>
                 </motion.div>
 
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-3 text-black dark:text-white leading-tight">
-                  CODING <br />{" "}
+                  {t.coding_text} <br />{" "}
                   <span className="text-zinc-400 dark:text-zinc-700 uppercase italic text-3xl md:text-4xl lg:text-5xl">
-                    Rhythm.
+                    {t.rhythm_text}
                   </span>
                 </h2>
 
-                {/* Genre tags */}
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="flex flex-wrap gap-2 mb-6"
-                >
-                  {["Pop", "Metal", "Alt Rock", "Indie"].map((genre) => (
-                    <span
-                      key={genre}
-                      className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500 border border-zinc-200 dark:border-white/5 rounded-full bg-white/30 dark:bg-white/[0.02]"
-                    >
+                <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-wrap gap-2 mb-6">
+                  {[t.genre_pop, t.genre_metal, t.genre_alt, t.genre_indie].map((genre) => (
+                    <span key={genre} className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-zinc-400 dark:text-zinc-500 border border-zinc-200 dark:border-white/5 rounded-full bg-white/30 dark:bg-white/[0.02]">
                       {genre}
                     </span>
                   ))}
                 </motion.div>
 
                 <p className="text-zinc-600 dark:text-zinc-400 text-base md:text-lg font-light max-w-md leading-relaxed mb-10 border-l-2 border-green-500/30 pl-6">
-                  My musical taste when coding ranges from Billie Eilish and Sabrina Carpenter to 2ZDinizz, Froid, Breezee, and more. The rhythm dictates the speed of the code.
+                  {t.coding_rhythm_desc}
                 </p>
 
-                {/* Stats row */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  className="flex items-center gap-6 text-xs"
-                >
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex items-center gap-6 text-xs">
                   <div>
-                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">Mood</div>
-                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">🎧 Focused</div>
+                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">{t.mood}</div>
+                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">{t.mood_val}</div>
                   </div>
                   <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800" />
                   <div>
-                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">Vibe</div>
-                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">Flow State</div>
+                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">{t.vibe}</div>
+                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">{t.vibe_val}</div>
                   </div>
                   <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800" />
                   <div>
-                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">Output</div>
-                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">2x Speed</div>
+                    <div className="text-zinc-400 dark:text-zinc-600 font-mono text-[10px] uppercase tracking-wider">{t.output}</div>
+                    <div className="text-zinc-700 dark:text-zinc-300 font-bold">{t.output_val}</div>
                   </div>
                 </motion.div>
               </div>
 
-              {/* Right - SpotifyCard */}
               <div className="flex justify-center lg:justify-end relative z-10">
                 <SpotifyCard />
               </div>
@@ -557,95 +537,72 @@ export default function Portfolio() {
       </section>
 
       <footer className="relative z-20 bg-zinc-100 dark:bg-[#050505] pt-32 pb-12 border-t border-zinc-300/50 dark:border-white/5 overflow-hidden transition-colors duration-500">
-        {/* Background orbs */}
         <div className="absolute bottom-0 left-0 w-[50vw] h-[50vh] bg-green-500/5 blur-[120px] rounded-full pointer-events-none"></div>
         <div className="absolute top-20 right-10 w-[20vw] h-[20vh] bg-sky-500/3 dark:bg-sky-500/[0.02] blur-[100px] rounded-full pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          {/* Header section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-            {/* Left — CTA */}
             <div className="lg:col-span-6">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                {/* Online indicator */}
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative">
                 <div className="flex items-center gap-3 mb-8">
                   <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                   </span>
-                  <span className="text-green-500 font-mono text-[10px] uppercase tracking-widest">Available for work</span>
+                  <span className="text-green-500 font-mono text-[10px] uppercase tracking-widest">{t.available}</span>
                 </div>
 
                 <h2 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-black dark:text-white leading-[0.85] mb-6">
-                  LET'S <br />{" "}
+                  {lang === 'en' ? "LET'S" : "VAMOS"} <br />{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-sky-500 to-purple-500 italic uppercase">
-                    Connect.
+                    {lang === 'en' ? 'Connect.' : 'Conectar.'}
                   </span>
                 </h2>
 
                 <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-light max-w-md leading-relaxed mb-12 border-l-2 border-green-500/30 pl-6">
-                  Based in Brasília, DF. Open to remote projects that challenge conventional logic.
+                  {lang === 'en'
+                    ? 'Based in Brasília, DF. Open to remote projects that challenge conventional logic.'
+                    : 'Baseado em Brasília, DF. Aberto a projetos remotos que desafiam a lógica convencional.'}
                 </p>
 
-                {/* Social links as cards */}
                 <div className="flex flex-wrap gap-4">
                   {/* GitHub */}
-                  <a
-                    href="https://github.com/RobsonRodriguess"
-                    target="_blank"
-                    onMouseEnter={playHover}
-                    onClick={playClick}
-                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-green-500/40 dark:hover:border-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.08)] transition-all duration-500"
-                  >
+                  <a href="https://github.com/RobsonRodriguess" target="_blank" onMouseEnter={playHover} onClick={playClick}
+                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-green-500/40 dark:hover:border-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.08)] transition-all duration-500">
                     <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-green-500/10 transition-colors duration-300">
                       <Github className="w-5 h-5 text-zinc-500 group-hover:text-green-500 transition-colors duration-300" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">GitHub</div>
+                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">{t.github}</div>
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">@RobsonRodriguess</div>
                     </div>
                     <ArrowUpRight className="w-4 h-4 ml-auto text-zinc-300 dark:text-zinc-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                   </a>
 
                   {/* LinkedIn */}
-                  <a
-                    href="https://www.linkedin.com/in/robson-rodrigues-dev/"
-                    target="_blank"
-                    onMouseEnter={playHover}
-                    onClick={playClick}
-                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-sky-500/40 dark:hover:border-sky-500/30 hover:shadow-[0_0_30px_rgba(14,165,233,0.08)] transition-all duration-500"
-                  >
+                  <a href="https://www.linkedin.com/in/robson-rodrigues-dev/" target="_blank" onMouseEnter={playHover} onClick={playClick}
+                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-sky-500/40 dark:hover:border-sky-500/30 hover:shadow-[0_0_30px_rgba(14,165,233,0.08)] transition-all duration-500">
                     <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-sky-500/10 transition-colors duration-300">
                       <svg className="w-5 h-5 text-zinc-500 group-hover:text-sky-500 transition-colors duration-300" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">LinkedIn</div>
+                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">{t.linkedin}</div>
                       <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">robson-rodrigues</div>
                     </div>
                     <ArrowUpRight className="w-4 h-4 ml-auto text-zinc-300 dark:text-zinc-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                   </a>
 
                   {/* Discord */}
-                  <button
-                    onClick={() => { handleCopyDiscord(); playClick(); }}
-                    onMouseEnter={playHover}
-                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-indigo-500/40 dark:hover:border-indigo-500/30 hover:shadow-[0_0_30px_rgba(99,102,241,0.08)] transition-all duration-500"
-                  >
+                  <button onClick={() => { handleCopyDiscord(); playClick(); }} onMouseEnter={playHover}
+                    className="group flex items-center gap-4 px-5 py-4 bg-white dark:bg-zinc-900/60 border border-zinc-300 dark:border-white/5 rounded-2xl hover:border-indigo-500/40 dark:hover:border-indigo-500/30 hover:shadow-[0_0_30px_rgba(99,102,241,0.08)] transition-all duration-500">
                     <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-indigo-500/10 transition-colors duration-300">
                       <MessageCircle className="w-5 h-5 text-zinc-500 group-hover:text-indigo-500 transition-colors duration-300" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">Discord</div>
-                      <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">
-                        {copied ? "ID Copied! ✓" : "Click to copy ID"}
-                      </div>
+                      <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">{t.discord}</div>
+                      <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">{copied ? t.discord_copied : t.discord_copy}</div>
                     </div>
                   </button>
                 </div>
@@ -656,92 +613,53 @@ export default function Portfolio() {
             <div className="lg:col-span-6 min-h-[500px] flex">
               <AnimatePresence mode="wait">
                 {formState !== "success" ? (
-                  <motion.div
-                    key="form"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    exit={{ opacity: 0, scale: 0.97 }}
-                    className="w-full bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-white/5 p-8 md:p-10 rounded-[2rem] shadow-xl dark:shadow-none backdrop-blur-xl relative overflow-hidden transition-colors duration-500"
-                  >
-                    {/* Top accent gradient */}
+                  <motion.div key="form" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} exit={{ opacity: 0, scale: 0.97 }}
+                    className="w-full bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-white/5 p-8 md:p-10 rounded-[2rem] shadow-xl dark:shadow-none backdrop-blur-xl relative overflow-hidden transition-colors duration-500">
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/30 to-transparent"></div>
-
-                    {/* Form header */}
                     <div className="flex items-center gap-3 mb-8">
                       <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
                         <Send className="w-5 h-5 text-green-500" />
                       </div>
                       <div>
-                        <div className="text-sm font-bold text-zinc-800 dark:text-zinc-200">Send a message</div>
-                        <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono uppercase tracking-wider">I'll respond within 24h</div>
+                        <div className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{t.send_title}</div>
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono uppercase tracking-wider">{t.send_subtitle}</div>
                       </div>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Name</label>
-                          <input
-                            type="text"
-                            name="name"
-                            required
-                            placeholder="Your name"
-                            onFocus={playClick}
-                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm"
-                          />
+                          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">{t.name_label}</label>
+                          <input type="text" name="name" required placeholder={t.name_placeholder} onFocus={playClick}
+                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm" />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Email</label>
-                          <input
-                            type="email"
-                            name="email"
-                            required
-                            placeholder="your@email.com"
-                            onFocus={playClick}
-                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm"
-                          />
+                          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">{t.email_label}</label>
+                          <input type="email" name="email" required placeholder={t.email_placeholder} onFocus={playClick}
+                            className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm" />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">Message</label>
-                        <textarea
-                          name="message"
-                          required
-                          rows={4}
-                          placeholder="How can I help with your project?"
-                          onFocus={playClick}
-                          className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm resize-none"
-                        />
+                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-2">{t.message_label}</label>
+                        <textarea name="message" required rows={4} placeholder={t.message_placeholder} onFocus={playClick}
+                          className="w-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm resize-none" />
                       </div>
-                      <button
-                        type="submit"
-                        disabled={formState === "loading"}
-                        onMouseEnter={playHover}
-                        onClick={playClick}
-                        className="group/btn w-full py-5 bg-zinc-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-green-600 dark:hover:bg-green-400 disabled:bg-zinc-400 dark:disabled:bg-zinc-700 transition-all duration-500 shadow-[0_10px_30px_rgba(34,197,94,0.15)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3"
-                      >
-                        {formState === "loading" ? "SENDING..." : "SEND MESSAGE"}
+                      <button type="submit" disabled={formState === "loading"} onMouseEnter={playHover} onClick={playClick}
+                        className="group/btn w-full py-5 bg-zinc-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-green-600 dark:hover:bg-green-400 disabled:bg-zinc-400 dark:disabled:bg-zinc-700 transition-all duration-500 shadow-[0_10px_30px_rgba(34,197,94,0.15)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3">
+                        {formState === "loading" ? t.sending_btn : t.send_btn}
                         <Send className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
                       </button>
                     </form>
                   </motion.div>
                 ) : (
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="w-full bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 p-10 rounded-[2.5rem] backdrop-blur-xl flex flex-col items-center justify-center text-center transition-colors duration-500"
-                  >
+                  <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+                    className="w-full bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 p-10 rounded-[2.5rem] backdrop-blur-xl flex flex-col items-center justify-center text-center transition-colors duration-500">
                     <CheckCircle2 className="w-16 h-16 text-green-500 mb-6" />
-                    <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-2 uppercase">Email sent!</h3>
-                    <p className="text-zinc-600 dark:text-zinc-400 font-mono text-sm max-w-[280px]">Your message was successfully received. I will get back to you shortly.</p>
-                    <button
-                      onClick={() => { setFormState("idle"); playClick(); }}
-                      className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors"
-                    >
-                      Send another message
+                    <h3 className="text-2xl font-black text-zinc-900 dark:text-white mb-2 uppercase">{t.success_title}</h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 font-mono text-sm max-w-[280px]">{t.success_text}</p>
+                    <button onClick={() => { setFormState("idle"); playClick(); }}
+                      className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors">
+                      {t.success_again}
                     </button>
                   </motion.div>
                 )}
@@ -749,21 +667,17 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Bottom bar */}
           <div className="py-12 border-t border-zinc-300/50 dark:border-white/5 mb-12">
             <GithubStats />
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-t border-zinc-300/50 dark:border-white/5 pt-10">
             <div className="text-[10px] font-mono tracking-[0.3em] uppercase text-zinc-500 dark:text-zinc-700">
-              © 2026 Developed by Robson Rodrigues
+              {t.footer_text}
             </div>
-            <button
-              onClick={() => { setShowGame(true); playClick(); }}
-              onMouseEnter={playHover}
-              className="group flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-600 dark:text-zinc-800 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer"
-            >
+            <button onClick={() => { setShowGame(true); playClick(); }} onMouseEnter={playHover}
+              className="group flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-600 dark:text-zinc-800 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer">
               <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
-              Void Defender
+              {t.void_defender}
             </button>
             <div className="text-black dark:text-zinc-800 font-black text-xl italic tracking-tighter cursor-default">
               ROBSON<span className="text-zinc-500 dark:text-zinc-900">.DEV</span>
@@ -772,6 +686,7 @@ export default function Portfolio() {
         </div>
       </footer>
       <FloatingSpotify />
+      <ScrollToTop />
 
       <AnimatePresence>
         {showGame && <SpaceShooter onClose={() => setShowGame(false)} />}
