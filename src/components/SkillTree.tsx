@@ -270,7 +270,7 @@ export default function SkillTree() {
                   stroke={
                     isConnected
                       ? `${skillA.color}60`
-                      : "rgba(113,113,122,0.12)"
+                      : "rgba(113,113,122,0.35)"
                   }
                   strokeWidth={isConnected ? 2 : 1}
                   initial={{ pathLength: 0, opacity: 0 }}
@@ -341,8 +341,8 @@ export default function SkillTree() {
                   style={{
                     width: nodeRadius * 2,
                     height: nodeRadius * 2,
-                    borderColor: isHovered ? skill.color : `${skill.color}40`,
-                    backgroundColor: isHovered ? `${skill.color}20` : "transparent",
+                    borderColor: isHovered ? skill.color : `${skill.color}55`,
+                    backgroundColor: isHovered ? `${skill.color}20` : `${skill.color}08`,
                   }}
                 >
                   <skill.icon
@@ -350,7 +350,7 @@ export default function SkillTree() {
                     style={{
                       width: nodeRadius * 0.7,
                       height: nodeRadius * 0.7,
-                      color: isHovered ? skill.color : `${skill.color}60`,
+                      color: isHovered ? skill.color : `${skill.color}80`,
                     }}
                   />
                 </div>
@@ -359,7 +359,7 @@ export default function SkillTree() {
                 <motion.div
                   className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
                   style={{ top: nodeRadius * 2 + 6 }}
-                  animate={{ opacity: isHovered ? 1 : 0.6 }}
+                  animate={{ opacity: isHovered ? 1 : 0.85 }}
                 >
                   <div className={`text-xs font-bold tracking-tight transition-colors duration-300 ${isHovered ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-500"}`}>
                     {skill.name}
