@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import GlitchTitle from "@/components/GlitchTitle";
 import { motion, AnimatePresence } from "framer-motion";
-import { Github, ExternalLink, CheckCircle2, Copy, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone } from "lucide-react";
+import { Github, ExternalLink, CheckCircle2, Copy, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone, Gamepad2 } from "lucide-react";
 import Image from "next/image";
 import { Tilt } from 'react-tilt';
 
@@ -21,6 +22,7 @@ import SpotifyCard from "@/components/SpotifyCard";
 import GithubStats from "@/components/GithubStats";
 import Timeline from "@/components/Timeline";
 import { useSound } from "@/components/SoundContext";
+import SpaceShooter from "@/components/SpaceShooter";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -137,7 +139,27 @@ const tiltOptions = {
 export default function Portfolio() {
   const [formState, setFormState] = useState<"idle" | "loading" | "success">("idle");
   const [copied, setCopied] = useState(false);
+  const [showGame, setShowGame] = useState(false);
   const { playHover, playClick } = useSound();
+
+  // Konami Code Easter Egg
+  useEffect(() => {
+    const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+    let index = 0;
+    const handle = (e: KeyboardEvent) => {
+      if (e.key === konamiCode[index]) {
+        index++;
+        if (index === konamiCode.length) {
+          setShowGame(true);
+          index = 0;
+        }
+      } else {
+        index = 0;
+      }
+    };
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, []);
 
   const discordID = "409017051223556121";
 
@@ -180,8 +202,13 @@ export default function Portfolio() {
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-zinc-600 dark:text-zinc-400 uppercase tracking-[0.2em] text-sm md:text-base mb-8 font-mono">
             <span className="text-sky-500 dark:text-sky-400 mr-2">&lt;</span>Software Engineer & Frontend<span className="text-sky-500 dark:text-sky-400 ml-2">/&gt;</span>
           </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-7xl md:text-[9rem] font-black tracking-tighter leading-[0.9] mb-10 drop-shadow-xl dark:drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] text-black dark:text-white">
-            ROBSON<span className="text-zinc-400 dark:text-zinc-800">.</span><br /><span className="text-zinc-500 dark:text-zinc-700">DEV</span>
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-7xl md:text-[9rem] font-black tracking-tighter leading-[0.9] mb-10 drop-shadow-xl dark:drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] text-black dark:text-white"
+          >
+            <GlitchTitle />
           </motion.h1>
 
           <motion.div 
@@ -319,7 +346,7 @@ export default function Portfolio() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
-                <span className="text-green-600 dark:text-green-500 text-xs font-black tracking-[0.3em] uppercase font-mono">System Online</span>
+                
               </motion.div>
               <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 text-black dark:text-white leading-tight">CODING <br /> <span className="text-zinc-400 dark:text-zinc-700 uppercase italic text-4xl md:text-6xl">Rhythm.</span></h2>
               <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-light max-w-md leading-relaxed mb-10 border-l-2 border-green-500/30 pl-6">
@@ -399,11 +426,23 @@ export default function Portfolio() {
           <div className="py-12 border-t border-zinc-300/50 dark:border-white/5 mb-12"><GithubStats /></div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-t border-zinc-300/50 dark:border-white/5 pt-10">
             <div className="text-[10px] font-mono tracking-[0.3em] uppercase text-zinc-500 dark:text-zinc-700">© 2026 Developed by Robson Rodrigues</div>
+            <button
+              onClick={() => { setShowGame(true); playClick(); }}
+              onMouseEnter={playHover}
+              className="group flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-600 dark:text-zinc-800 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer"
+            >
+              <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
+              Void Defender
+            </button>
             <div className="text-black dark:text-zinc-800 font-black text-xl italic tracking-tighter cursor-default">ROBSON<span className="text-zinc-500 dark:text-zinc-900">.DEV</span></div>
           </div>
         </div>
       </footer>
       <FloatingSpotify />
+
+      <AnimatePresence>
+        {showGame && <SpaceShooter onClose={() => setShowGame(false)} />}
+      </AnimatePresence>
     </main>
   );
 }
