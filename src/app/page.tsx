@@ -5,9 +5,7 @@ import GlitchTitle from "@/components/GlitchTitle";
 import { motion, AnimatePresence } from "framer-motion";
 import { Github, ExternalLink, CheckCircle2, Copy, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone, Gamepad2 } from "lucide-react";
 import Image from "next/image";
-import { Tilt } from 'react-tilt';
-
-import { 
+import {
   SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, 
   SiLua, SiRoblox, SiNestjs, SiPostgresql, 
   SiTailwindcss, SiDocker, SiPython, 
@@ -23,6 +21,7 @@ import GithubStats from "@/components/GithubStats";
 import Timeline from "@/components/Timeline";
 import { useSound } from "@/components/SoundContext";
 import SpaceShooter from "@/components/SpaceShooter";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -122,24 +121,12 @@ const projects = [
   },
 ];
 
-const tiltOptions = {
-  reverse: false,
-  max: 15,
-  perspective: 1000,
-  scale: 1.02,
-  speed: 1000,
-  transition: true,
-  axis: null,
-  reset: true,
-  easing: "cubic-bezier(.03,.98,.52,.99)",
-  glare: true,
-  "max-glare": 0.2,
-};
-
 export default function Portfolio() {
+  const [loading, setLoading] = useState(true);
   const [formState, setFormState] = useState<"idle" | "loading" | "success">("idle");
   const [copied, setCopied] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [activeProject, setActiveProject] = useState(0);
   const { playHover, playClick } = useSound();
 
   // Konami Code Easter Egg
@@ -193,7 +180,17 @@ export default function Portfolio() {
   }
 
   return (
-    <main className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500">
+    <>
+      <AnimatePresence>
+        {loading && <LoadingScreen onDone={() => setLoading(false)} />}
+      </AnimatePresence>
+
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500"
+      >
       <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
       <section className="min-h-screen w-full flex flex-col items-center justify-center relative z-10 px-6 overflow-hidden">
@@ -274,61 +271,155 @@ export default function Portfolio() {
 
       <section className="relative z-20 py-20 bg-zinc-50 dark:bg-[#0a0a0a] transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="mb-32 md:mb-48">
+          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="mb-20 md:mb-32">
             <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">Selected <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">Works.</span></h2>
             <div className="w-24 h-1 bg-zinc-300 dark:bg-zinc-800 mt-8 transition-colors duration-500"></div>
           </motion.div>
-          <div className="flex flex-col gap-32 md:gap-64">
-            {projects.map((project, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <motion.div key={project.id} initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, ease: "easeOut" }} className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-12 md:gap-24`}>
-                  <div className="w-full md:w-3/5 group cursor-pointer">
-                    <Tilt options={tiltOptions}>
-                      <div className={`relative w-full aspect-video rounded-2xl overflow-hidden border ${project.neonBorder} bg-white dark:bg-zinc-900/50 p-2 md:p-3 ${project.neonShadow} transition-all duration-700`}>
-                        <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 rounded-tl-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
-                        <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 rounded-br-lg opacity-80 border-zinc-300 dark:border-zinc-700"></div>
-                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
-                          <Image src={project.image} alt={project.title} fill className="object-cover object-top grayscale-[60%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" />
-                        </div>
-                      </div>
-                    </Tilt>
+
+          {/* Project counter */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-4 mb-16 md:mb-24"
+          >
+            <span className="text-6xl md:text-8xl font-black text-zinc-200 dark:text-zinc-800 font-mono">{String(activeProject + 1).padStart(2, "0")}</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+            <span className="text-zinc-400 dark:text-zinc-600 font-mono text-xs uppercase tracking-widest">
+              {activeProject + 1} / {projects.length}
+            </span>
+          </motion.div>
+
+          {/* Active project showcase */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeProject}
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -60 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="mb-16 md:mb-24"
+            >
+              <div className="aspect-[16/9] w-full relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-900/50 p-2 shadow-2xl dark:shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg border-zinc-300 dark:border-zinc-700 z-10" />
+                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-lg border-zinc-300 dark:border-zinc-700 z-10" />
+
+                {/* Category badge */}
+                <div className="absolute top-6 left-6 z-10">
+                  <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
+                    {projects[activeProject].category}
+                  </span>
+                </div>
+
+                {/* Live/Source badge */}
+                <div className="absolute top-6 right-6 z-10">
+                  <span className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${projects[activeProject].isLive ? "bg-green-400 animate-pulse" : "bg-zinc-500"}`} />
+                    {projects[activeProject].isLive ? "LIVE" : "SOURCE"}
+                  </span>
+                </div>
+
+                <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
+                  <Image
+                    src={projects[activeProject].image}
+                    alt={projects[activeProject].title}
+                    fill
+                    className="object-cover object-top grayscale-[30%] hover:grayscale-0 transition-all duration-1000"
+                  />
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Project details */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`detail-${activeProject}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="mb-12"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
+                {/* Title + description */}
+                <div className="lg:col-span-2">
+                  <h3 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter text-black dark:text-zinc-100">
+                    {projects[activeProject].title}
+                  </h3>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg font-light leading-relaxed max-w-2xl">
+                    {projects[activeProject].description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mt-6">
+                    {projects[activeProject].tags.map((tag) => {
+                      const tagInfo = tagData[tag];
+                      if (!tagInfo)
+                        return <span key={tag} className="px-3 py-1.5 text-[10px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-full uppercase tracking-wider">{tag}</span>;
+                      const Icon = tagInfo.icon;
+                      return (
+                        <span key={tag} className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-full uppercase tracking-wider transition-all duration-300 hover:border-current ${tagInfo.color}`}>
+                          <Icon className="w-3 h-3" />
+                          {tag}
+                        </span>
+                      );
+                    })}
                   </div>
-                  <div className="w-full md:w-2/5 flex flex-col justify-center">
-                    <h3 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-black dark:text-zinc-100">{project.title}</h3>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl mb-8 font-light leading-relaxed">{project.description}</p>
-                    <div className="flex flex-wrap gap-3 mb-12">
-                      {project.tags.map((tag) => {
-                        const tagInfo = tagData[tag];
-                        if (!tagInfo) return <span key={tag} className="px-4 py-2 text-xs font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-md transition-colors duration-500">{tag}</span>;
-                        const Icon = tagInfo.icon;
-                        return (
-                          <span key={tag} className={`flex items-center gap-2 px-4 py-2 text-xs font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-md transition-colors duration-300 ${tagInfo.color}`}>
-                            <Icon className="w-4 h-4" />
-                            {tag}
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <a 
-                      href={project.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      onMouseEnter={playHover}
-                      onClick={playClick}
-                      className="group/btn inline-flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-100 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
-                    >
-                      {project.isLive ? "View Live Project" : "View Source Code"}
-                      {project.isLive ? (
-                        <ExternalLink className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 transition-opacity" />
-                      ) : (
-                        <Github className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 transition-opacity" />
-                      )}
-                    </a>
-                  </div>
-                </motion.div>
-              );
-            })}
+                </div>
+
+                {/* Action + link */}
+                <div className="flex flex-col justify-end items-start lg:items-end lg:text-right">
+                  <a
+                    href={projects[activeProject].link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={playHover}
+                    onClick={playClick}
+                    className="group/btn inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-100 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    {projects[activeProject].isLive ? "Visit Live Site" : "View on GitHub"}
+                    {projects[activeProject].isLive ? (
+                      <ExternalLink className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
+                    ) : (
+                      <Github className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
+                    )}
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Project navigator */}
+          <div className="flex items-center gap-3 flex-wrap justify-center">
+            {projects.map((project, i) => (
+              <motion.button
+                key={project.id}
+                onClick={() => { setActiveProject(i); playClick(); }}
+                onMouseEnter={playHover}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`relative group px-6 py-3 rounded-xl border transition-all duration-500 ${
+                  i === activeProject
+                    ? "border-zinc-400 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/50"
+                    : "border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-zinc-300 dark:hover:border-zinc-700"
+                }`}
+              >
+                <span className={`text-[10px] font-black uppercase tracking-[0.15em] transition-colors duration-300 ${
+                  i === activeProject
+                    ? "text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"
+                }`}>
+                  {project.title}
+                </span>
+                {i === activeProject && (
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
+                )}
+              </motion.button>
+            ))}
           </div>
         </div>
       </section>
@@ -443,6 +534,7 @@ export default function Portfolio() {
       <AnimatePresence>
         {showGame && <SpaceShooter onClose={() => setShowGame(false)} />}
       </AnimatePresence>
-    </main>
+    </motion.main>
+    </>
   );
 }
