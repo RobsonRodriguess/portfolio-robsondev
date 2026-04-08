@@ -58,6 +58,13 @@ type Texts = {
   void_defender: string;
   sound_on: string;
   sound_off: string;
+  about_badge: string;
+  about_title: string;
+  about_location: string;
+  about_p1: string;
+  about_p2: string;
+  about_p3: string;
+  about_p4: string;
   theme_dark: string;
   theme_light: string;
   scroll_top: string;
@@ -126,6 +133,13 @@ const texts: Record<Lang, Texts> = {
     void_defender: "Void Defender",
     sound_on: "Sound On",
     sound_off: "Sound Off",
+    about_badge: "Who I am",
+    about_title: "About Me.",
+    about_location: "Brasilia, DF",
+    about_p1: "I'm Robson Rodrigues, originally from Brasilia, graduate in Systems Analysis and Development from IFG — Formosa campus. I've always been drawn to technology — from early on I wanted to be part of this world.",
+    about_p2: "It all started in middle school when I got my first contact with a computer and tinkered with private CS 1.6 game servers. That hands-on curiosity — the freedom of editing configs, tweaking servers, seeing instant results — hooked me. The moment I finished high school, I went straight to college.",
+    about_p3: "Today my focus is on React and frontend — designing interfaces from scratch and styling them until they're pixel-perfect is what brings me the most satisfaction. But I'm no stranger to full-stack or gamedev. I've shipped complete projects across NestJS, PostgreSQL, Docker, and even Roblox Studio.",
+    about_p4: "Beyond code, I'm into voice acting, gaming, writing music, and exploring AI tools. I built my first PC at 12 years old. I'm always looking for what's next.",
     theme_dark: "Dark Mode",
     theme_light: "Light Mode",
     scroll_top: "Back to top",
@@ -212,6 +226,13 @@ const texts: Record<Lang, Texts> = {
     void_defender: "Void Defender",
     sound_on: "Som Ligado",
     sound_off: "Som Desligado",
+    about_badge: "Quem sou eu",
+    about_title: "Sobre Mim.",
+    about_location: "Brasília, DF",
+    about_p1: "Sou Robson Rodrigues, natural de Brasília, formado em Análise e Desenvolvimento de Sistemas pelo IFG — campus Formosa. Sempre fui atraído pela tecnologia — desde cedo quis fazer parte desse universo.",
+    about_p2: "Tudo começou no ensino fundamental, quando tive meu primeiro contato com o computador e mexi com servidores de CS 1.6. Aquela curiosidade prática — a liberdade de editar configs, mexer em servidores, ver resultados na hora — me fisgou. Assim que terminei o ensino médio, fui direto pra faculdade.",
+    about_p3: "Hoje meu foco é React e frontend — planejar interfaces do zero e estilizar até cada pixel ficar no lugar é o que mais me dá satisfação. Mas não sou leigo em fullstack ou gamedev. Entrego projetos completos com NestJS, PostgreSQL, Docker e até Roblox Studio.",
+    about_p4: "Fora do código, curto dublagem, jogos, já escrevi músicas e exploro ferramentas de IA a fundo. Montei meu primeiro computador aos 12 anos. Sempre buscando o que vem depois.",
     theme_dark: "Modo Escuro",
     theme_light: "Modo Claro",
     scroll_top: "Voltar ao topo",

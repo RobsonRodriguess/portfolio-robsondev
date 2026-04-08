@@ -44,7 +44,7 @@ const timelineData = [
   {
     id: 2,
     year: "2023 — 2027",
-    yearShort: "2023-27",
+    yearShort: "2023-26",
     title: "Systems Analysis and Development",
     company: "Instituto Federal de Goiás (IFG)",
     location: "Goiás, Brazil",
