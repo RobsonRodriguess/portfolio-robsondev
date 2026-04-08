@@ -83,7 +83,7 @@ export default function AboutMe() {
   };
 
   return (
-    <section ref={ref} className="relative z-20 bg-zinc-50 dark:bg-[#0a0a0a] transition-colors duration-500 overflow-hidden">
+    <section ref={ref} className="relative z-20 transition-colors duration-500 overflow-hidden">
 
       {/* ═══ TOP SECTION: Photo + Headline ═══ */}
       <motion.div style={{ y: globalY, opacity: globalOpacity }} className="max-w-7xl mx-auto px-6 pt-16 md:pt-24">

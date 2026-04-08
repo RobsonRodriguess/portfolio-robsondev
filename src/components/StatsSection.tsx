@@ -106,7 +106,7 @@ export default function StatsSection() {
   ];
 
   return (
-    <section ref={ref} className="relative z-20 py-24 bg-zinc-50 dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-500">
+    <section ref={ref} className="relative z-20 py-24 overflow-hidden transition-colors duration-500">
       {/* Separator */}
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <div className="w-full h-[1px] overflow-hidden">

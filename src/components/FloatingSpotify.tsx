@@ -49,7 +49,7 @@ export default function FloatingSpotify() {
       <div className="relative group">
         <div className="absolute -inset-1 bg-green-500/20 blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-        <div className="relative flex items-center gap-4 p-3 pr-5 bg-[#121212]/90 backdrop-blur-md border border-zinc-800/50 rounded-2xl shadow-2xl w-[280px] md:w-[320px]">
+        <div className="relative flex items-center gap-3 md:gap-4 p-2.5 md:p-3 pr-4 md:pr-5 bg-[#121212]/90 backdrop-blur-md border border-zinc-800/50 rounded-2xl shadow-2xl w-[240px] sm:w-[280px] md:w-[320px]">
           
           {/* Capa do Álbum que Gira */}
           <div className="relative w-12 h-12 flex-shrink-0 rounded-full overflow-hidden border border-zinc-700">

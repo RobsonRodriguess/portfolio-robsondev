@@ -513,7 +513,7 @@ export default function TerminalProfile() {
   };
 
   return (
-    <section className="py-20 relative z-20 font-mono bg-zinc-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+    <section className="py-20 relative z-20 font-mono transition-colors duration-500">
       <div className="max-w-4xl mx-auto px-6">
         <AnimatePresence>
           {isMinimized ? (

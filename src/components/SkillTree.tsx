@@ -207,7 +207,7 @@ export default function SkillTree() {
   }, []);
 
   return (
-    <section className="py-24 bg-zinc-50 dark:bg-[#0a0a0a] relative z-20 overflow-hidden font-sans transition-colors duration-500">
+    <section className="py-24 relative z-20 overflow-hidden font-sans transition-colors duration-500">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Header */}
@@ -217,8 +217,8 @@ export default function SkillTree() {
           viewport={{ once: true }}
           className="text-center mb-16 md:mb-20"
         >
-          <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-black dark:text-zinc-100 mb-3">
-            SKILL <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 italic">Constellation.</span>
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-black dark:text-zinc-100 mb-3 leading-[1.1]">
+            SKILL <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-700 italic block sm:inline">Constellation.</span>
           </h2>
           <p className="text-zinc-500 dark:text-zinc-400 tracking-widest text-xs md:text-sm uppercase">
             &gt; interconnected abilities — click to explore
@@ -357,14 +357,14 @@ export default function SkillTree() {
 
                 {/* Label */}
                 <motion.div
-                  className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
-                  style={{ top: nodeRadius * 2 + 6 }}
+                  className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap pointer-events-none"
+                  style={{ top: nodeRadius * 2 + 4 }}
                   animate={{ opacity: isHovered ? 1 : 0.85 }}
                 >
-                  <div className={`text-xs font-bold tracking-tight transition-colors duration-300 ${isHovered ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-500"}`}>
+                  <div className={`text-[10px] sm:text-xs font-bold tracking-tight transition-colors duration-300 ${isHovered ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-500"}`}>
                     {skill.name}
                   </div>
-                  <div className="text-[10px] font-mono" style={{ color: skill.color }}>
+                  <div className="text-[8px] sm:text-[10px] font-mono hidden sm:block" style={{ color: skill.color }}>
                     {skill.level}% — {skill.tier}
                   </div>
                 </motion.div>

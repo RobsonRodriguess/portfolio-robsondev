@@ -150,7 +150,7 @@ export default function Timeline() {
   };
 
   return (
-    <section className="py-24 bg-white dark:bg-[#050505] relative z-20 transition-colors duration-500 overflow-hidden">
+    <section className="py-24 relative z-20 transition-colors duration-500 overflow-hidden">
       {/* Background subtle gradient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[30vw] h-[30vh] bg-blue-500/3 dark:bg-blue-500/[0.02] blur-[120px] rounded-full" />
@@ -244,7 +244,7 @@ export default function Timeline() {
                   <div className="hidden md:block" />
 
                   {/* Card — on mobile single col, on desktop the alternation is via flex order */}
-                  <div className={`${isLeft ? "md:col-start-1 md:pr-16 md:text-right" : "md:col-start-2 md:pl-16"}`}>
+                  <div className={`pl-14 sm:pl-16 ${isLeft ? "md:col-start-1 md:pl-0 md:pr-16 md:text-right" : "md:col-start-2 md:pl-16"}`}>
                     <TimelineCard
                       item={item}
                       colors={colors}

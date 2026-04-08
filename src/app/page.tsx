@@ -27,6 +27,9 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ParticleBackground from "@/components/ParticleBackground";
 import StatsSection from "@/components/StatsSection";
 import ScrollToTop from "@/components/ScrollToTop";
+import CoursesSection from "@/components/CoursesSection";
+import CurrentStack from "@/components/CurrentStack";
+import PressSection from "@/components/PressSection";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -317,10 +320,10 @@ export default function Portfolio() {
 
       <AboutMe />
 
-      <section className="relative z-20 py-20 bg-zinc-50 dark:bg-[#0a0a0a] transition-colors duration-500">
+      <section className="relative z-20 py-20 transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="mb-20 md:mb-32">
-            <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">{t.works_title} <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">{t.works_label}</span></h2>
+            <h2 className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">{t.works_title} <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">{t.works_label}</span></h2>
             <div className="w-24 h-1 bg-zinc-300 dark:bg-zinc-800 mt-8 transition-colors duration-500"></div>
           </motion.div>
 
@@ -472,13 +475,19 @@ export default function Portfolio() {
         </div>
       </section>
 
+      <CoursesSection />
+
+      <PressSection />
+
       <StatsSection />
       <TerminalProfile />
       <Timeline />
       <SkillTree />
 
+      <CurrentStack />
+
       {/* Code Rhythm Section */}
-      <section className="py-24 bg-zinc-50 dark:bg-[#0a0a0a] relative z-20 overflow-hidden transition-colors duration-500">
+      <section className="py-24 relative z-20 overflow-hidden transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 60 }}
@@ -491,7 +500,7 @@ export default function Portfolio() {
             <div className="absolute -inset-[1px] rounded-[2.6rem] bg-gradient-to-br from-green-500/30 via-sky-500/10 to-purple-500/30 opacity-50 group-hover:opacity-100 transition-opacity duration-1000 blur" />
             <div className="absolute -inset-[1px] rounded-[2.6rem] bg-gradient-to-br from-green-500/30 via-sky-500/10 to-purple-500/30 opacity-50 group-hover:opacity-100 transition-opacity duration-1000" />
 
-            <div className="relative bg-zinc-50/80 dark:bg-[#0a0a0a]/90 backdrop-blur-3xl rounded-[2.5rem] p-8 md:p-12 lg:p-16 overflow-hidden border border-zinc-200/50 dark:border-white/5 transition-colors duration-500">
+            <div className="relative bg-zinc-50/80 dark:bg-zinc-950/90 backdrop-blur-3xl rounded-[2.5rem] p-8 md:p-12 lg:p-16 overflow-hidden border border-zinc-200/50 dark:border-white/5 transition-colors duration-500">
               {/* Animated background orbs */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <motion.div
@@ -677,207 +686,277 @@ export default function Portfolio() {
       </section>
 
       {/* Contact / Footer */}
-      <footer className="relative z-20 bg-zinc-100 dark:bg-[#050505] pt-32 pb-12 overflow-hidden transition-colors duration-500">
-        {/* Animated background */}
-        <div className="absolute inset-0 pointer-events-none">
+      <footer className="relative z-20 pt-28 md:pt-36 pb-0 overflow-hidden transition-colors duration-500">
+        {/* ── Animated background layers ── */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Gradient orbs */}
           <motion.div
-            className="absolute bottom-0 left-0 w-[60vw] h-[60vh] bg-gradient-to-tr from-green-500/5 to-transparent blur-[120px] rounded-full"
-            animate={{ scale: [1, 1.3, 1], x: [0, 20, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-40 -left-40 w-[700px] h-[700px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%)", filter: "blur(80px)" }}
+            animate={{ scale: [1, 1.2, 1], x: [0, 40, 0], y: [0, -30, 0] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="absolute top-20 right-0 w-[40vw] h-[40vh] bg-gradient-to-bl from-purple-500/3 to-transparent blur-[100px] rounded-full"
-            animate={{ scale: [1, 1.4, 1], x: [0, -30, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-20 -right-40 w-[500px] h-[500px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%)", filter: "blur(80px)" }}
+            animate={{ scale: [1, 1.3, 1], x: [0, -50, 0], y: [0, 30, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           />
-          {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.02]"
-            style={{
-              backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
-              backgroundSize: '60px 60px',
-            }}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(14,165,233,0.04) 0%, transparent 70%)", filter: "blur(60px)" }}
+            animate={{ scale: [1, 1.4, 1], rotate: [0, 90, 180] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           />
+
+          {/* Top fade edge */}
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-zinc-50 dark:from-[#0a0a0a] to-transparent" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-            {/* Left — Title + Links */}
-            <div className="lg:col-span-6">
+          {/* ── CTA / Hero Area ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center mb-20 md:mb-28"
+          >
+            {/* Status badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/60 dark:bg-white/[0.04] border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl mb-10 shadow-sm"
+            >
+              <div className="relative">
+                <span className="absolute inset-0 w-2.5 h-2.5 bg-green-500 rounded-full animate-ping opacity-30" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+              </div>
+              <span className="text-green-600 dark:text-green-400 font-semibold text-xs uppercase tracking-widest">{t.available}</span>
+            </motion.div>
+
+            {/* Big title */}
+            <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter text-zinc-900 dark:text-white leading-[0.85] mb-8">
+              {lang === 'en' ? "LET'S" : "VAMOS"}{" "}
+              <span className="relative inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 italic">
+                  {lang === 'en' ? 'Connect.' : 'Conectar.'}
+                </span>
+                <motion.div
+                  className="absolute -bottom-2 left-0 right-0 h-[4px] rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  style={{ transformOrigin: "left" }}
+                />
+              </span>
+            </h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg font-light max-w-lg mx-auto leading-relaxed"
+            >
+              {lang === 'en'
+                ? 'Based in Brasília, DF. Open to remote projects that challenge conventional logic.'
+                : 'Baseado em Brasília, DF. Aberto a projetos remotos que desafiam a lógica convencional.'}
+            </motion.p>
+          </motion.div>
+
+          {/* ── Main Grid: Social + Form ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mb-24">
+            {/* Left — Social Links */}
+            <div className="lg:col-span-5">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
-                className="relative"
+                className="space-y-4"
               >
-                {/* Status badge */}
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="flex items-center gap-3 mb-8"
-                >
-                  <div className="relative">
-                    <span className="absolute inset-0 w-3 h-3 bg-green-500 rounded-full animate-ping opacity-20" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]" />
-                  </div>
-                  <span className="text-green-500 font-mono text-[10px] uppercase tracking-widest">{t.available}</span>
-                </motion.div>
-
-                {/* Huge title */}
-                <h2 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-black dark:text-white leading-[0.85] mb-6">
-                  {lang === 'en' ? "LET'S" : "VAMOS"} <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-sky-500 to-purple-500 italic uppercase">
-                    {lang === 'en' ? 'Connect.' : 'Conectar.'}
+                {/* Section label */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-px bg-gradient-to-r from-green-500 to-transparent" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">
+                    {lang === 'en' ? 'Find me on' : 'Me encontre em'}
                   </span>
-                </h2>
-
-                <p className="text-zinc-600 dark:text-zinc-400 text-lg md:text-xl font-light max-w-md leading-relaxed mb-12 border-l-2 border-green-500/30 pl-6">
-                  {lang === 'en'
-                    ? 'Based in Brasília, DF. Open to remote projects that challenge conventional logic.'
-                    : 'Baseado em Brasília, DF. Aberto a projetos remotos que desafiam a lógica convencional.'}
-                </p>
-
-                {/* Social links — vertical list style */}
-                <div className="space-y-3 mb-8">
-                  {[
-                    {
-                      icon: <Github className="w-5 h-5" />,
-                      label: t.github,
-                      sub: '@RobsonRodriguess',
-                      url: 'https://github.com/RobsonRodriguess',
-                      accent: 'green' as const,
-                    },
-                    {
-                      icon: (
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                      ),
-                      label: t.linkedin,
-                      sub: 'robson-rodrigues',
-                      url: 'https://www.linkedin.com/in/robson-rodrigues-dev/',
-                      accent: 'sky' as const,
-                    },
-                    {
-                      icon: <MessageCircle className="w-5 h-5" />,
-                      label: t.discord,
-                      sub: copied ? t.discord_copied : t.discord_copy,
-                      url: null,
-                      accent: 'indigo' as const,
-                      action: () => { handleCopyDiscord(); playClick(); },
-                    },
-                  ].map((link, i) => {
-                    const accentMap = {
-                      green: { border: 'border-green-500/30 hover:border-green-500/50', bg: 'hover:bg-green-500/[0.04]', shadow: 'hover:shadow-[0_0_30px_rgba(34,197,94,0.06)]', text: 'group-hover:text-green-500' },
-                      sky: { border: 'border-sky-500/30 hover:border-sky-500/50', bg: 'hover:bg-sky-500/[0.04]', shadow: 'hover:shadow-[0_0_30px_rgba(14,165,233,0.06)]', text: 'group-hover:text-sky-500' },
-                      indigo: { border: 'border-indigo-500/30 hover:border-indigo-500/50', bg: 'hover:bg-indigo-500/[0.04]', shadow: 'hover:shadow-[0_0_30px_rgba(99,102,241,0.06)]', text: 'group-hover:text-indigo-500' },
-                    };
-                    const accent = accentMap[link.accent];
-                    const Tag = link.url ? 'a' : 'button';
-
-                    return (
-                      <motion.div
-                        key={link.label}
-                        initial={{ opacity: 0, x: -15 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 + i * 0.1 }}
-                      >
-                        <Tag
-                          href={link.url || undefined}
-                          target={link.url ? '_blank' : undefined}
-                          rel={link.url ? 'noopener noreferrer' : undefined}
-                          onClick={link.action as React.MouseEventHandler}
-                          onMouseEnter={playHover}
-                          className={`group flex items-center gap-5 w-full px-6 py-4 bg-white/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 ${accent.border} ${accent.bg} ${accent.shadow} rounded-2xl backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5`}
-                        >
-                          <div className={`w-11 h-11 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 flex items-center justify-center text-zinc-500 ${accent.text} transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(34,197,94,0.1)]`}>
-                            {link.icon}
-                          </div>
-                          <div className="flex-1 text-left">
-                            <div className="text-xs font-bold text-zinc-700 dark:text-zinc-200">{link.label}</div>
-                            <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono">{link.sub}</div>
-                          </div>
-                          <ArrowUpRight className={`w-4 h-4 text-zinc-300 dark:text-zinc-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 ${accent.text}`} />
-                        </Tag>
-                      </motion.div>
-                    );
-                  })}
                 </div>
+
+                {[
+                  {
+                    icon: <Github className="w-5 h-5" />,
+                    label: t.github,
+                    sub: '@RobsonRodriguess',
+                    url: 'https://github.com/RobsonRodriguess',
+                    gradient: 'from-green-500 to-emerald-500',
+                    hoverBorder: 'hover:border-green-500/40',
+                    hoverShadow: 'hover:shadow-[0_0_40px_rgba(34,197,94,0.08)]',
+                    iconHover: 'group-hover:text-green-500',
+                    bgIcon: 'group-hover:bg-green-500/10',
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    ),
+                    label: t.linkedin,
+                    sub: 'robson-rodrigues',
+                    url: 'https://www.linkedin.com/in/robson-rodrigues-dev/',
+                    gradient: 'from-sky-500 to-blue-500',
+                    hoverBorder: 'hover:border-sky-500/40',
+                    hoverShadow: 'hover:shadow-[0_0_40px_rgba(14,165,233,0.08)]',
+                    iconHover: 'group-hover:text-sky-500',
+                    bgIcon: 'group-hover:bg-sky-500/10',
+                  },
+                  {
+                    icon: <MessageCircle className="w-5 h-5" />,
+                    label: t.discord,
+                    sub: copied ? t.discord_copied : t.discord_copy,
+                    url: null,
+                    gradient: 'from-indigo-500 to-violet-500',
+                    hoverBorder: 'hover:border-indigo-500/40',
+                    hoverShadow: 'hover:shadow-[0_0_40px_rgba(99,102,241,0.08)]',
+                    iconHover: 'group-hover:text-indigo-500',
+                    bgIcon: 'group-hover:bg-indigo-500/10',
+                    action: () => { handleCopyDiscord(); playClick(); },
+                  },
+                ].map((link, i) => {
+                  const Tag = link.url ? 'a' : 'button';
+                  return (
+                    <motion.div
+                      key={link.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 + i * 0.1 }}
+                    >
+                      <Tag
+                        href={link.url || undefined}
+                        target={link.url ? '_blank' : undefined}
+                        rel={link.url ? 'noopener noreferrer' : undefined}
+                        onClick={link.action as React.MouseEventHandler}
+                        onMouseEnter={playHover}
+                        className={`group relative flex items-center gap-5 w-full px-6 py-5 rounded-2xl bg-white/70 dark:bg-white/[0.025] border border-zinc-200/70 dark:border-white/[0.06] ${link.hoverBorder} ${link.hoverShadow} backdrop-blur-xl transition-all duration-500 hover:-translate-y-1`}
+                      >
+                        {/* Left gradient accent on hover */}
+                        <div className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-r-full bg-gradient-to-b ${link.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                        <div className={`w-12 h-12 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/40 flex items-center justify-center text-zinc-400 ${link.iconHover} ${link.bgIcon} transition-all duration-400 flex-shrink-0`}>
+                          {link.icon}
+                        </div>
+                        <div className="flex-1 text-left min-w-0">
+                          <div className="text-sm font-bold text-zinc-800 dark:text-zinc-100 mb-0.5">{link.label}</div>
+                          <div className="text-[11px] text-zinc-400 dark:text-zinc-500 font-mono truncate">{link.sub}</div>
+                        </div>
+                        <motion.div
+                          className="flex-shrink-0"
+                          whileHover={{ x: 2, y: -2 }}
+                        >
+                          <ArrowUpRight className={`w-4 h-4 text-zinc-300 dark:text-zinc-700 group-hover:opacity-100 opacity-0 ${link.iconHover} transition-all duration-300`} />
+                        </motion.div>
+                      </Tag>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Extra decoration — code snippet */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-6 px-5 py-4 rounded-xl bg-zinc-100/80 dark:bg-white/[0.02] border border-zinc-200/50 dark:border-white/[0.04]"
+                >
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-red-400/60" />
+                    <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
+                    <div className="w-2 h-2 rounded-full bg-green-400/60" />
+                  </div>
+                  <code className="text-[11px] font-mono text-zinc-400 dark:text-zinc-600 leading-relaxed">
+                    <span className="text-purple-500/70">const</span> <span className="text-sky-500/70">dev</span> = &#123; <br />
+                    &nbsp;&nbsp;<span className="text-emerald-500/70">focus</span>: <span className="text-amber-500/70">&quot;React & Frontend&quot;</span>,<br />
+                    &nbsp;&nbsp;<span className="text-emerald-500/70">status</span>: <span className="text-green-500/80">&quot;{lang === 'en' ? 'open to work' : 'disponível'}&quot;</span><br />
+                    &#125;;
+                  </code>
+                </motion.div>
               </motion.div>
             </div>
 
             {/* Right — Contact Form */}
-            <div className="lg:col-span-6 min-h-[500px] flex">
+            <div className="lg:col-span-7 flex">
               <AnimatePresence mode="wait">
                 {formState !== "success" ? (
                   <motion.div
                     key="form"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     exit={{ opacity: 0, scale: 0.97 }}
                     className="w-full relative group/form"
                   >
-                    {/* Card background with animated border */}
-                    <div className="absolute -inset-[1px] rounded-[2.1rem] bg-gradient-to-br from-green-500/20 via-transparent to-sky-500/20 opacity-30 group-hover/form:opacity-60 blur-sm transition-opacity duration-700" />
-                    <div className="absolute -inset-[1px] rounded-[2.1rem] bg-gradient-to-br from-green-500/20 via-transparent to-sky-500/20 opacity-30 group-hover/form:opacity-60 transition-opacity duration-700" />
+                    {/* Animated border glow */}
+                    <div className="absolute -inset-[1px] rounded-[2.1rem] bg-gradient-to-br from-green-500/15 via-transparent to-cyan-500/15 opacity-0 group-hover/form:opacity-100 blur-sm transition-opacity duration-1000" />
+                    <div className="absolute -inset-[1px] rounded-[2.1rem] bg-gradient-to-br from-green-500/10 via-transparent to-cyan-500/10 opacity-0 group-hover/form:opacity-100 transition-opacity duration-1000" />
 
-                    <div className="relative bg-white/70 dark:bg-zinc-900/40 backdrop-blur-xl p-8 md:p-10 rounded-[2rem] relative overflow-hidden transition-colors duration-500">
-                      {/* Decorative top line */}
-                      <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-green-500/40 to-transparent" />
-                      {/* Corner accents */}
-                      <div className="absolute top-3 left-3 w-5 h-5 border-t border-l border-green-500/15 rounded-tl-lg" />
-                      <div className="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-green-500/15 rounded-br-lg" />
+                    <div className="relative bg-white/80 dark:bg-white/[0.02] backdrop-blur-2xl p-8 md:p-10 rounded-[2rem] overflow-hidden border border-zinc-200/60 dark:border-white/[0.06] transition-all duration-500 shadow-sm group-hover/form:shadow-lg">
+                      {/* Decorative acccents */}
+                      <div className="absolute top-0 left-10 right-10 h-[2px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
+                      <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-green-500/20 rounded-tl-md" />
+                      <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-green-500/20 rounded-br-md" />
 
                       {/* Header */}
-                      <div className="flex items-center gap-3 mb-8">
+                      <div className="flex items-center gap-4 mb-8">
                         <motion.div
-                          whileHover={{ rotate: -10, scale: 1.05 }}
-                          className="w-11 h-11 rounded-xl bg-gradient-to-br from-green-500/10 to-sky-500/10 flex items-center justify-center border border-green-500/10"
+                          whileHover={{ rotate: -10, scale: 1.08 }}
+                          className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 flex items-center justify-center border border-green-500/15 shadow-sm"
                         >
                           <Send className="w-5 h-5 text-green-500" />
                         </motion.div>
                         <div>
-                          <div className="text-sm font-bold text-zinc-800 dark:text-zinc-200">{t.send_title}</div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-600 font-mono uppercase tracking-wider">{t.send_subtitle}</div>
+                          <div className="text-base font-bold text-zinc-800 dark:text-zinc-100">{t.send_title}</div>
+                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono uppercase tracking-wider">{t.send_subtitle}</div>
                         </div>
                       </div>
 
                       <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                           {/* Name */}
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-3">{t.name_label}</label>
+                          <div className="space-y-2.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 ml-1">{t.name_label}</label>
                             <div className="relative group/input">
                               <input
                                 type="text" name="name" required placeholder={t.name_placeholder}
                                 onFocus={playClick}
-                                className="w-full bg-zinc-50/80 dark:bg-white/5 border border-zinc-200/80 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] group-hover/input:border-zinc-300 dark:group-hover/input:border-white/15 transition-all duration-300 font-mono text-sm"
+                                className="w-full bg-zinc-50/60 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.08] rounded-xl px-5 py-3.5 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/40 focus:bg-green-500/[0.02] focus:shadow-[0_0_20px_rgba(34,197,94,0.06)] group-hover/input:border-zinc-300 dark:group-hover/input:border-white/[0.12] transition-all duration-300 font-mono text-sm"
                               />
                             </div>
                           </div>
                           {/* Email */}
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-3">{t.email_label}</label>
+                          <div className="space-y-2.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 ml-1">{t.email_label}</label>
                             <div className="relative group/input">
                               <input
                                 type="email" name="email" required placeholder={t.email_placeholder}
                                 onFocus={playClick}
-                                className="w-full bg-zinc-50/80 dark:bg-white/5 border border-zinc-200/80 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] group-hover/input:border-zinc-300 dark:group-hover/input:border-white/15 transition-all duration-300 font-mono text-sm"
+                                className="w-full bg-zinc-50/60 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.08] rounded-xl px-5 py-3.5 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/40 focus:bg-green-500/[0.02] focus:shadow-[0_0_20px_rgba(34,197,94,0.06)] group-hover/input:border-zinc-300 dark:group-hover/input:border-white/[0.12] transition-all duration-300 font-mono text-sm"
                               />
                             </div>
                           </div>
                         </div>
 
                         {/* Message */}
-                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-3">{t.message_label}</label>
+                        <div className="space-y-2.5">
+                          <label className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 dark:text-zinc-400 ml-1">{t.message_label}</label>
                           <textarea
-                            name="message" required rows={4} placeholder={t.message_placeholder}
+                            name="message" required rows={5} placeholder={t.message_placeholder}
                             onFocus={playClick}
-                            className="w-full bg-zinc-50/80 dark:bg-white/5 border border-zinc-200/80 dark:border-white/10 rounded-2xl px-6 py-4 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/50 focus:bg-green-500/[0.02] transition-all duration-300 font-mono text-sm resize-none"
+                            className="w-full bg-zinc-50/60 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.08] rounded-xl px-5 py-3.5 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:border-green-500/40 focus:bg-green-500/[0.02] focus:shadow-[0_0_20px_rgba(34,197,94,0.06)] transition-all duration-300 font-mono text-sm resize-none"
                           />
                         </div>
 
@@ -885,11 +964,11 @@ export default function Portfolio() {
                         <motion.button
                           type="submit" disabled={formState === "loading"}
                           onMouseEnter={playHover} onClick={playClick}
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.99 }}
-                          className="relative w-full py-5 overflow-hidden rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] text-xs hover:shadow-[0_10px_40px_rgba(34,197,94,0.2)] dark:hover:shadow-[0_10px_40px_rgba(34,197,94,0.15)] transition-shadow duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group/btn"
+                          whileHover={{ scale: 1.01, y: -1 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="relative w-full py-4.5 overflow-hidden rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-[0.2em] text-xs hover:shadow-[0_8px_30px_rgba(34,197,94,0.15)] dark:hover:shadow-[0_8px_30px_rgba(34,197,94,0.1)] transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group/btn mt-2"
                         >
-                          {/* Shimmer on hover */}
+                          {/* Shimmer sweep */}
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
                           <span className="relative">{formState === "loading" ? t.sending_btn : t.send_btn}</span>
                           <Send className="w-4 h-4 relative group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
@@ -906,40 +985,34 @@ export default function Portfolio() {
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                     className="w-full relative"
                   >
-                    {/* Success card glow */}
                     <div className="absolute -inset-[1px] rounded-[2.6rem] bg-gradient-to-br from-green-500/30 to-emerald-500/20 opacity-40 blur" />
                     <div className="absolute -inset-[1px] rounded-[2.6rem] bg-gradient-to-br from-green-500/30 to-emerald-500/20 opacity-40" />
 
-                    <div className="relative bg-green-50/80 dark:bg-green-500/[0.06] backdrop-blur-xl border border-green-200/80 dark:border-green-500/15 p-10 md:p-14 rounded-[2.5rem] flex flex-col items-center justify-center text-center overflow-hidden transition-colors duration-500">
-                      {/* Floating success particles */}
-                      {Array.from({ length: 8 }).map((_, i) => (
+                    <div className="relative bg-green-50/80 dark:bg-green-500/[0.04] backdrop-blur-xl border border-green-200/80 dark:border-green-500/15 p-10 md:p-14 rounded-[2.5rem] flex flex-col items-center justify-center text-center overflow-hidden min-h-[400px] transition-colors duration-500">
+                      {Array.from({ length: 10 }).map((_, i) => (
                         <motion.div
                           key={i}
-                          className="absolute w-1.5 h-1.5 bg-green-500/30 rounded-full"
+                          className="absolute w-1 h-1 bg-green-500/40 rounded-full"
                           animate={{
-                            y: [0, -30 - i * 10],
-                            x: [0, Math.sin(i) * 20],
-                            opacity: [0, 0.6, 0],
+                            y: [0, -40 - i * 8],
+                            x: [0, Math.sin(i * 0.8) * 25],
+                            opacity: [0, 0.7, 0],
                           }}
                           transition={{
-                            duration: 2 + i * 0.3,
+                            duration: 2.5 + i * 0.2,
                             repeat: Infinity,
                             ease: "easeOut",
-                            delay: i * 0.25,
+                            delay: i * 0.2,
                           }}
-                          style={{
-                            left: `${15 + i * 10}%`,
-                            bottom: '20%',
-                          }}
+                          style={{ left: `${10 + i * 9}%`, bottom: '15%' }}
                         />
                       ))}
 
-                      {/* Animated checkmark */}
                       <motion.div
                         initial={{ scale: 0, rotate: -45 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-                        className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(34,197,94,0.3)]"
+                        className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(34,197,94,0.3)]"
                       >
                         <CheckCircle2 className="w-10 h-10 text-white" strokeWidth={3} />
                       </motion.div>
@@ -948,7 +1021,7 @@ export default function Portfolio() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white mb-2 uppercase tracking-tight"
+                        className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-white mb-3 uppercase tracking-tight"
                       >
                         {t.success_title}
                       </motion.h3>
@@ -956,7 +1029,7 @@ export default function Portfolio() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="text-zinc-600 dark:text-zinc-400 font-mono text-sm max-w-[280px]"
+                        className="text-zinc-600 dark:text-zinc-400 font-mono text-sm max-w-[300px] leading-relaxed"
                       >
                         {t.success_text}
                       </motion.p>
@@ -965,7 +1038,7 @@ export default function Portfolio() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
                         onClick={() => { setFormState("idle"); playClick(); }}
-                        className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors"
+                        className="mt-8 text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
                       >
                         {t.success_again}
                       </motion.button>
@@ -976,31 +1049,77 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Divider + GithubStats */}
-          <div className="py-12 relative">
+          {/* ── GithubStats Section ── */}
+          <div className="py-16 relative">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-3/4 h-px bg-gradient-to-r from-transparent via-zinc-300/50 dark:via-white/10 to-transparent" />
+              <div className="w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-zinc-300/50 dark:via-white/[0.06] to-transparent" />
             </div>
             <div className="relative">
               <GithubStats />
             </div>
           </div>
 
-          {/* Bottom bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-t border-zinc-300/50 dark:border-white/5 pt-10">
-            <div className="text-[10px] font-mono tracking-[0.3em] uppercase text-zinc-500 dark:text-zinc-700">
-              {t.footer_text}
+          {/* ── Bottom Bar ── */}
+          <div className="border-t border-zinc-200/60 dark:border-white/[0.04] pt-8 pb-10">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              {/* Left: brand mark */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-4"
+              >
+                <div className="text-xl font-black italic tracking-tighter text-zinc-900 dark:text-zinc-100 cursor-default">
+                  ROBSON<span className="text-zinc-300 dark:text-zinc-700">.DEV</span>
+                </div>
+                <div className="w-px h-5 bg-zinc-200 dark:bg-zinc-800 hidden md:block" />
+                <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-600 hidden md:block">
+                  {t.footer_text}
+                </span>
+              </motion.div>
+
+              {/* Center: easter egg button */}
+              <button
+                onClick={() => { setShowGame(true); playClick(); }}
+                onMouseEnter={playHover}
+                className="group flex items-center gap-2.5 text-[10px] font-mono tracking-[0.15em] uppercase text-zinc-400 dark:text-zinc-700 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer px-4 py-2 rounded-lg hover:bg-green-500/[0.04]"
+              >
+                <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-bounce" />
+                {t.void_defender}
+              </button>
+
+              {/* Right: social mini icons */}
+              <div className="flex items-center gap-3">
+                {[
+                  { url: 'https://github.com/RobsonRodriguess', icon: <Github className="w-4 h-4" /> },
+                  {
+                    url: 'https://www.linkedin.com/in/robson-rodrigues-dev/',
+                    icon: (
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    ),
+                  },
+                ].map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={playHover}
+                    className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/[0.06] flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-zinc-300 dark:hover:border-white/[0.12] transition-all duration-300"
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
             </div>
-            <button
-              onClick={() => { setShowGame(true); playClick(); }}
-              onMouseEnter={playHover}
-              className="group flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-600 dark:text-zinc-800 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer"
-            >
-              <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
-              {t.void_defender}
-            </button>
-            <div className="text-black dark:text-zinc-800 font-black text-xl italic tracking-tighter cursor-default">
-              ROBSON<span className="text-zinc-500 dark:text-zinc-900">.DEV</span>
+
+            {/* Mobile footer text */}
+            <div className="md:hidden mt-4 text-center">
+              <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-400 dark:text-zinc-600">
+                {t.footer_text}
+              </span>
             </div>
           </div>
         </div>
