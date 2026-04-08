@@ -13,23 +13,26 @@ import {
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
 
-import SkillTree from "@/components/SkillTree";
+import dynamic from "next/dynamic";
+
+const SkillTree = dynamic(() => import("@/components/SkillTree"));
+const TerminalProfile = dynamic(() => import("@/components/Terminal"));
+const Timeline = dynamic(() => import("@/components/Timeline"));
+const StatsSection = dynamic(() => import("@/components/StatsSection"));
+const CoursesSection = dynamic(() => import("@/components/CoursesSection"));
+const CurrentStack = dynamic(() => import("@/components/CurrentStack"));
+const PressSection = dynamic(() => import("@/components/PressSection"));
+
 import AboutMe from "@/components/AboutMe";
-import TerminalProfile from "@/components/Terminal";
 import FloatingSpotify from "@/components/FloatingSpotify";
 import SpotifyCard from "@/components/SpotifyCard";
 import GithubStats from "@/components/GithubStats";
-import Timeline from "@/components/Timeline";
 import { useSound } from "@/components/SoundContext";
 import { useLanguage } from "@/components/LanguageContext";
 import SpaceShooter from "@/components/SpaceShooter";
 import LoadingScreen from "@/components/LoadingScreen";
 import ParticleBackground from "@/components/ParticleBackground";
-import StatsSection from "@/components/StatsSection";
 import ScrollToTop from "@/components/ScrollToTop";
-import CoursesSection from "@/components/CoursesSection";
-import CurrentStack from "@/components/CurrentStack";
-import PressSection from "@/components/PressSection";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
