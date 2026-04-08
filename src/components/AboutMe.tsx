@@ -149,6 +149,8 @@ export default function AboutMe() {
                     src="/robson.jpg"
                     alt="Robson Kauã Rodrigues Magalhães"
                     fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover/photo:scale-105"
                   />
 
