@@ -30,7 +30,6 @@ import GithubStats from "@/components/GithubStats";
 import { useSound } from "@/components/SoundContext";
 import { useLanguage } from "@/components/LanguageContext";
 import SpaceShooter from "@/components/SpaceShooter";
-import LoadingScreen from "@/components/LoadingScreen";
 import ParticleBackground from "@/components/ParticleBackground";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -165,7 +164,6 @@ const projectMeta = [
 ];
 
 export default function Portfolio() {
-  const [loading, setLoading] = useState(true);
   const [formState, setFormState] = useState<"idle" | "loading" | "success">("idle");
   const [copied, setCopied] = useState(false);
   const [showGame, setShowGame] = useState(false);
@@ -233,13 +231,9 @@ export default function Portfolio() {
 
   return (
     <>
-      <AnimatePresence>
-        {loading && <LoadingScreen onDone={() => setLoading(false)} />}
-      </AnimatePresence>
-
       <motion.main
         initial={{ opacity: 0 }}
-        animate={{ opacity: loading ? 0 : 1 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500"
       >
