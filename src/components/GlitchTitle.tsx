@@ -211,12 +211,13 @@ export default function GlitchTitle() {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes gtsk{0%,100%{transform:translate(0)}25%{transform:translate(-3px,1px)}50%{transform:translate(2px,-2px)}75%{transform:translate(-1px,2px)}}
         @keyframes curbl{0%,49%{opacity:1}50%,100%{opacity:0}}
         .g-shake{animation:gtsk .1s linear infinite}
         .c-blk{animation:curbl 530ms step-end infinite}
-      `}</style>
+      `}} />
 
       <span
         className={`relative inline-block ${glitching ? "g-shake" : ""}`}

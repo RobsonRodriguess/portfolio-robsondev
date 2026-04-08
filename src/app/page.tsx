@@ -69,12 +69,13 @@ function TechCarouselRow({
 
   return (
     <div className="flex" style={{ height: 72 }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes ${animName} {
           0% { transform: translateX(${direction === 1 ? '0%' : '-33.33333%'}); }
           100% { transform: translateX(${direction === 1 ? '-33.33333%' : '0%'}); }
         }
-      `}</style>
+      `}} />
       <motion.div
         className="flex items-center"
         style={{ animation: `${animName} ${speed}s linear infinite` }}
