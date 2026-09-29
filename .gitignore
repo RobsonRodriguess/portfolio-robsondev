@@ -40,4 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# local agents & skills
+.agents/
+skills-lock.json
+
+# local token refresh utility
+spotify-token-refresh.js
+

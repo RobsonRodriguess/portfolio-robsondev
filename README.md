@@ -1,125 +1,125 @@
-<div align="center">
+# Robson Rodrigues — Software Engineer Portfolio
 
-![NEXUS Portfolio](https://img.shields.io/badge/NEXUS-Portfolio-22c55e?style=for-the-badge&logo=github&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-15-000?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+Portfólio pessoal e showcase de projetos desenvolvido por **Robson Rodrigues**, Engenheiro de Software & Desenvolvedor Fullstack baseado em Brasília, DF.
 
-### Personal portfolio built with **Next.js**, **Framer Motion**, and a whole lot of attention to detail.
+Construído com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS** e **Framer Motion**, com foco em performance, experiência do usuário e design interativo.
 
-[Live Demo](https://your-url-here.vercel.app) · [Report Bug](https://github.com/RobsonRodriguess/meu-portfolio/issues)
-
-<img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2FRobsonRodriguess%2Fmeu-portfolio&query=%24.stargazers_count&label=Stars&style=flat&color=orange" alt="Stars" />
-<img src="https://img.shields.io/github/forks/RobsonRodriguess/meu-portfolio?label=Forks&style=flat&color=blue" alt="Forks" />
-<img src="https://img.shields.io/github/last-commit/RobsonRodriguess/meu-portfolio?style=flat&color=green" alt="Last Commit" />
-
-</div>
+🌐 **Acesse online:** [robsondev.vercel.app](https://robsondev.vercel.app)
 
 ---
 
-## Features
+## 🚀 Funcionalidades
 
-| Feature | Description |
-|---------|-------------|
-| **Glitch Title** | Auto-cycling scramble decode effect on the hero name + hover interactions + SFX |
-| **Selected Works** | Interactive project showcase with navigation, badges, and animated transitions |
-| **NEXUS Terminal** | VS Code-style terminal with typing animation, `neofetch`, `skills`, `matrix` and more |
-| **Career Timeline** | Expandable cards with alternating layout, animated progress line, and skill stats |
-| **Skill Constellation** | Interactive node graph with SVG connections, floating nodes, and detail modals |
-| **Coding Rhythm** | Animated music section with floating notes, equalizer bars, and Spotify integration |
-| **Void Defender** | 🎮 Easter egg space shooter (Konami code or footer button) |
-| **Loading Screen** | Terminal-style boot sequence with progress bar |
-| **Sound Effects** | Subtle hover/click audio via `SoundContext` |
-| **Dark / Light** | Full theme support with smooth transitions |
+- **Terminal Interativo:** Interface CLI estilizada no próprio navegador com comandos como `skills`, `projects`, `neofetch`, `fortune` e autocompletion via `Tab`.
+- **Integração com Spotify:** Widget e card com status de reprodução em tempo real (*Now Playing*) via Spotify Web API.
+- **Estatísticas do GitHub:** Integração direta com a API do GitHub para exibir linguagens mais utilizadas, repositórios e estrelas.
+- **Internacionalização (i18n):** Suporte a múltiplos idiomas (Português e Inglês) via Context API.
+- **Dark / Light Mode:** Alternância de temas fluida com persistência através de `next-themes`.
+- **Efeitos Sonoros e Animações:** Micro-interações táteis opcionais com controle de áudio, além de animações fluidas com Framer Motion.
+- **Void Defender (Easter Egg):** Mini game estilo arcade acessível via Konami Code (`↑ ↑ ↓ ↓ ← → ← → B A`) ou pelo atalho no rodapé.
+- **OpenGraph Dinâmico:** Geração automatizada de imagens sociais via `@vercel/og` para compartilhamento em redes sociais.
 
-## Tech Stack
+---
 
-<div align="center">
+## 🛠️ Tecnologias Utilizadas
 
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)
-![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
-![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma)
-![Vercel](https://img.shields.io/badge/Vercel-black?style=flat-square&logo=vercel)
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router & Turbopack)
+- **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+- **Biblioteca UI:** [React 19](https://react.dev/)
+- **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animações:** [Framer Motion](https://www.framer.com/motion/)
+- **Ícones:** [Lucide React](https://lucide.dev/) & [React Icons](https://react-icons.github.io/react-icons/)
+- **Analytics & Observabilidade:** [@vercel/analytics](https://vercel.com/analytics) & [@vercel/speed-insights](https://vercel.com/docs/speed-insights)
+- **Deploy:** [Vercel](https://vercel.com/)
 
-</div>
+---
 
-## Architecture
+## 📁 Estrutura do Projeto
 
-```
+```text
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout with providers
-│   ├── page.tsx            # Main portfolio page
-│   └── globals.css         # Global styles
-├── components/
-│   ├── GlitchTitle.tsx     # Scramble decode hero title
-│   ├── LoadingScreen.tsx   # Terminal boot animation
-│   ├── SkillTree.tsx       # Interactive skill constellation
-│   ├── SpaceShooter.tsx    # Easter egg space shooter
-│   ├── Terminal.tsx        # Interactive VS Code-style terminal
-│   ├── Timeline.tsx        # Career milestone cards
-│   ├── SoundContext.tsx    # Global audio provider
-│   ├── SoundToggle.tsx     # Mute toggle button
-│   ├── SpotifyCard.tsx     # Spotify now-playing card
-│   ├── FloatingSpotify.tsx # Floating Spotify widget
-│   ├── GithubStats.tsx     # GitHub contribution stats
-│   └── ThemeProvider.tsx   # Dark/light theme provider
+│   ├── api/                  # Endpoints serverless (Spotify, GitHub, Contato)
+│   ├── globals.css           # Estilos globais e tokens Tailwind
+│   ├── layout.tsx            # Root layout, providers e metadados SEO/OG
+│   ├── page.tsx              # Página principal e seções do portfólio
+│   ├── opengraph-image.tsx   # Geração dinâmica da imagem OpenGraph
+│   ├── sitemap.ts            # Geração do sitemap.xml
+│   └── robots.ts             # Configuração do robots.txt
+└── components/               # Componentes reutilizáveis e interativos
+    ├── AboutMe.tsx
+    ├── CoursesSection.tsx
+    ├── CurrentStack.tsx
+    ├── FloatingSpotify.tsx
+    ├── GithubStats.tsx
+    ├── GlitchTitle.tsx
+    ├── LanguageContext.tsx
+    ├── SpaceShooter.tsx
+    ├── SpotifyCard.tsx
+    ├── Terminal.tsx
+    └── Timeline.tsx
 ```
-
-## Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the result.
-
-## Terminal Commands
-
-The portfolio includes an interactive terminal. Try these:
-
-| Command | Action |
-|---------|--------|
-| `help` | List all available commands |
-| `neofetch` | System info with ASCII art |
-| `skills` | Technical skills with animated bars |
-| `projects` | Featured project list |
-| `matrix` | Animated Matrix rain effect |
-| `fortune` | Random dev wisdom quotes |
-| `coffee` | ASCII coffee art |
-
-> **Tip:** Press `Tab` to autocomplete commands and `↑/↓` to navigate history.
-
-## Easter Egg
-
-Type the **Konami Code** on your keyboard to unlock the space shooter:
-
-```
-↑ ↑ ↓ ↓ ← → ← → B A
-```
-
-Or click the **"Void Defender"** button in the footer.
 
 ---
 
-<div align="center">
+## ⚙️ Variáveis de Ambiente
 
-Built by [**Robson Rodrigues**](https://github.com/RobsonRodriguess) · Brasília, DF
+Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
 
-![Visaual Studio Code](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
-![NEXUS](https://img.shields.io/badge/NEXUS_v2.0-22c55e?style=for-the-badge)
+```env
+# URL base do site
+NEXT_PUBLIC_SITE_URL=https://robsondev.vercel.app
 
-</div>
+# Integração Web3Forms (Formulário de Contato)
+WEB3FORMS_ACCESS_KEY=sua_chave_web3forms
+
+# Integração GitHub API (Opcional, aumenta o rate-limit)
+GITHUB_ACCESS_TOKEN=seu_github_personal_access_token
+
+# Integração Spotify (Now Playing)
+SPOTIFY_CLIENT_ID=seu_client_id
+SPOTIFY_CLIENT_SECRET=seu_client_secret
+SPOTIFY_REFRESH_TOKEN=seu_refresh_token
+```
+
+---
+
+## 💻 Como Rodar Localmente
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/RobsonRodriguess/portfolio-robsondev.git
+   cd portfolio-robsondev
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+
+4. Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+---
+
+## 📦 Scripts Disponíveis
+
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o servidor local de desenvolvimento |
+| `npm run build` | Compila o projeto otimizado para produção |
+| `npm run start` | Inicia a build de produção localmente |
+| `npm run lint` | Executa a verificação estática de código com ESLint |
+
+---
+
+## 👤 Autor
+
+**Robson Rodrigues**  
+- GitHub: [@RobsonRodriguess](https://github.com/RobsonRodriguess)  
+- Localização: Brasília, DF — Brasil  
+- Portfólio: [robsondev.vercel.app](https://robsondev.vercel.app)

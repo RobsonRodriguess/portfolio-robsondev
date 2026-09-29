@@ -1,32 +1,63 @@
 import { NextResponse } from 'next/server';
 
+export const revalidate = 3600; // Cache por 1 hora para economizar cota do GitHub
+
 export async function GET() {
   const user = 'RobsonRodriguess';
-  const token = process.env.GITHUB_ACCESS_TOKEN; // Guarde no seu .env
+  const token = process.env.GITHUB_ACCESS_TOKEN;
+
+  const headers: HeadersInit = {
+    Accept: 'application/vnd.github.v3+json',
+    ...(token ? { Authorization: `token ${token}` } : {}),
+  };
 
   try {
-    // Busca dados do perfil
     const userRes = await fetch(`https://api.github.com/users/${user}`, {
-      headers: { Authorization: `token ${token}` }
+      headers,
+      next: { revalidate: 3600 },
     });
+
+    if (!userRes.ok) {
+      return NextResponse.json({
+        followers: 0,
+        public_repos: 0,
+        total_stars: 0,
+        location: 'Brasília, DF',
+        bio: 'Software Engineer & Fullstack Developer',
+      });
+    }
+
     const userData = await userRes.json();
 
-    // Busca repositórios para calcular linguagens e estrelas
     const repoRes = await fetch(`https://api.github.com/users/${user}/repos?per_page=100`, {
-      headers: { Authorization: `token ${token}` }
+      headers,
+      next: { revalidate: 3600 },
     });
-    const repos = await repoRes.json();
+
+    let totalStars = 0;
+    if (repoRes.ok) {
+      const repos = await repoRes.json();
+      if (Array.isArray(repos)) {
+        totalStars = repos.reduce((acc: number, repo: { stargazers_count?: number }) => acc + (repo.stargazers_count || 0), 0);
+      }
+    }
 
     const stats = {
-      followers: userData.followers,
-      public_repos: userData.public_repos,
-      total_stars: repos.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0),
-      location: userData.location,
-      bio: userData.bio
+      followers: userData.followers || 0,
+      public_repos: userData.public_repos || 0,
+      total_stars: totalStars,
+      location: userData.location || 'Brasília, DF',
+      bio: userData.bio || 'Software Engineer',
     };
 
     return NextResponse.json(stats);
-  } catch (error) {
-    return NextResponse.json({ error: 'Falha ao buscar GitHub' }, { status: 500 });
+  } catch {
+    return NextResponse.json({
+      followers: 0,
+      public_repos: 0,
+      total_stars: 0,
+      location: 'Brasília, DF',
+      bio: 'Software Engineer',
+    });
   }
 }

@@ -61,7 +61,7 @@ export const metadata: Metadata = {
       "Software Engineer based in Brasília, DF. Specialized in Next.js, React, TypeScript, Node.js, and fullstack development.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Robson Rodrigues - Software Engineer Portfolio",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Robson Rodrigues | Software Engineer",
     description: "Software Engineer specialized in Next.js, React, TypeScript, and fullstack development.",
-    images: ["/og-image.png"],
+    images: ["/twitter-image"],
   },
   icons: {
     icon: "/favicon.svg",

@@ -1,93 +1,99 @@
 import { NextResponse } from 'next/server';
 
-const client_id = process.env.SPOTIFY_CLIENT_ID;
-const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+export const dynamic = 'force-dynamic';
 
-const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
 const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-playing';
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 
-async function callSpotifyApi() {
-  let access_token: string | null = null;
+// In-memory token cache to prevent hammering the Spotify token endpoint
+let cachedAccessToken: string | null = null;
+let tokenExpiresAt = 0;
 
-  // Strategy 1: Use refresh token if available and valid
-  if (refresh_token && refresh_token.length > 50) {
-    try {
-      const resp = await fetch(TOKEN_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${basic}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refresh_token,
-        }),
-        cache: 'no-store',
-        next: { revalidate: 0 },
-      });
+function getCredentials() {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret =
+    process.env.SPOTIFY_CLIENT_SECRET ||
+    process.env['SEGREDO DO CLIENTE_SPOTIFY_'];
+  const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
 
-      if (resp.ok) {
-        const data = await resp.json();
-        access_token = data.access_token || null;
-      }
-    } catch (e) {
-      console.error('Spotify refresh token flow failed:', e);
-    }
+  return { clientId, clientSecret, refreshToken };
+}
+
+async function getAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
+  const now = Date.now();
+  if (cachedAccessToken && now < tokenExpiresAt - 60000) {
+    return cachedAccessToken;
   }
 
-  // If no access token, we can't proceed
-  if (!access_token) {
-    return NextResponse.json({ isPlaying: false });
-  }
+  const basic = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-  // Get currently playing track
-  const resp = await fetch(`${NOW_PLAYING_ENDPOINT}?market=from_token`, {
+  const resp = await fetch(TOKEN_ENDPOINT, {
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Basic ${basic}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }),
     cache: 'no-store',
   });
 
-  if (resp.status === 204) {
-    return NextResponse.json({ isPlaying: false });
-  }
-
-  if (resp.status === 401) {
-    // Token expired
-    return NextResponse.json({ isPlaying: false, error: 'Token expired' });
-  }
-
   if (!resp.ok) {
-    return NextResponse.json({ isPlaying: false });
+    return null;
   }
 
-  const song = await resp.json();
-
-  if (!song.item) {
-    return NextResponse.json({ isPlaying: false });
+  const data = await resp.json();
+  if (data.access_token) {
+    cachedAccessToken = data.access_token;
+    tokenExpiresAt = now + (data.expires_in || 3600) * 1000;
+    return cachedAccessToken;
   }
 
-  return NextResponse.json({
-    albumImageUrl: song.item.album.images[0]?.url || '',
-    artist: song.item.artists.map((a: any) => a.name).join(', '),
-    isPlaying: song.is_playing,
-    songUrl: song.item.external_urls.spotify,
-    title: song.item.name,
-    progressMs: song.progress_ms,
-    durationMs: song.item.duration_ms,
-  });
+  return null;
 }
 
 export async function GET() {
   try {
-    if (!client_id || !client_secret) {
-      return NextResponse.json({ isPlaying: false, error: 'Not configured' });
+    const { clientId, clientSecret, refreshToken } = getCredentials();
+
+    if (!clientId || !clientSecret || !refreshToken) {
+      return NextResponse.json({ isPlaying: false, configured: false });
     }
-    return await callSpotifyApi();
-  } catch (error) {
-    console.error('Erro na API Spotify:', error);
-    return NextResponse.json({ isPlaying: false, error: 'Falha na conexão' });
+
+    const accessToken = await getAccessToken(clientId, clientSecret, refreshToken);
+    if (!accessToken) {
+      return NextResponse.json({ isPlaying: false });
+    }
+
+    const resp = await fetch(`${NOW_PLAYING_ENDPOINT}?market=from_token`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (resp.status === 204 || resp.status > 400) {
+      return NextResponse.json({ isPlaying: false });
+    }
+
+    const song = await resp.json();
+
+    if (!song || !song.item) {
+      return NextResponse.json({ isPlaying: false });
+    }
+
+    return NextResponse.json({
+      albumImageUrl: song.item.album?.images?.[0]?.url || '',
+      artist: song.item.artists?.map((a: { name: string }) => a.name).join(', ') || 'Unknown',
+      isPlaying: Boolean(song.is_playing),
+      songUrl: song.item.external_urls?.spotify || '',
+      title: song.item.name || '',
+      progressMs: song.progress_ms || 0,
+      durationMs: song.item.duration_ms || 0,
+    });
+  } catch {
+    return NextResponse.json({ isPlaying: false });
   }
 }
