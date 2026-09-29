@@ -211,29 +211,6 @@ export default function CurrentStack() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 md:mb-20"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/60 dark:bg-white/5 border border-zinc-200/80 dark:border-white/10 backdrop-blur-xl mb-8 shadow-sm"
-          >
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Activity className="w-4 h-4 text-blue-500" />
-            </motion.div>
-            <span className="text-xs font-semibold tracking-widest uppercase text-zinc-500 dark:text-zinc-400">
-              {t.badge}
-            </span>
-            <div className="relative">
-              <span className="absolute inset-0 w-2 h-2 bg-green-500 rounded-full animate-ping opacity-40" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-            </div>
-          </motion.div>
-
           {/* Title */}
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-zinc-900 dark:text-white mb-4 leading-[1.1]">
             {t.title}{" "}

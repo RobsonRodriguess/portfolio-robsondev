@@ -10,13 +10,14 @@ Construído com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS** e **F
 
 ## 🚀 Funcionalidades
 
-- **Terminal Interativo:** Interface CLI estilizada no próprio navegador com comandos como `skills`, `projects`, `neofetch`, `fortune` e autocompletion via `Tab`.
+- **Showcase Interativo de Projetos:** Transições cinematográficas com desfoque de movimento, cartões 3D tilt e links para aplicações em produção.
+- **Skill Constellation:** Grafo interativo de arquitetura e competências conectando frontend, backend, bancos de dados e cloud com inspetor de telemetria.
+- **Career Timeline:** Linha de trajetória profissional com condutor de laser iluminado pelo scroll e cartões técnicos expansíveis.
 - **Integração com Spotify:** Widget e card com status de reprodução em tempo real (*Now Playing*) via Spotify Web API.
-- **Estatísticas do GitHub:** Integração direta com a API do GitHub para exibir linguagens mais utilizadas, repositórios e estrelas.
+- **Estatísticas do GitHub:** Integração direta com a API do GitHub para exibir linguagens mais utilizadas, repositórios e atividade recente.
 - **Internacionalização (i18n):** Suporte a múltiplos idiomas (Português e Inglês) via Context API.
 - **Dark / Light Mode:** Alternância de temas fluida com persistência através de `next-themes`.
 - **Efeitos Sonoros e Animações:** Micro-interações táteis opcionais com controle de áudio, além de animações fluidas com Framer Motion.
-- **Void Defender (Easter Egg):** Mini game estilo arcade acessível via Konami Code (`↑ ↑ ↓ ↓ ← → ← → B A`) ou pelo atalho no rodapé.
 - **OpenGraph Dinâmico:** Geração automatizada de imagens sociais via `@vercel/og` para compartilhamento em redes sociais.
 
 ---

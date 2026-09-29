@@ -26,9 +26,9 @@ import { useLanguage } from "@/components/LanguageContext";
 const TEXTS = {
   pt: {
     badge: "Formação & Certificações",
-    titleLine1: "Minha",
-    titleHighlight: "Jornada",
-    titleLine2: "de Conhecimento",
+    titleLine1: "Formação &",
+    titleHighlight: "Certificações.",
+    titleLine2: "",
     subtitle1: "Cada certificação representa dedicação e evolução constante.",
     subtitle2: "Aprendizado",
     subtitle2b: "transformado em prática",
@@ -48,9 +48,9 @@ const TEXTS = {
   },
   en: {
     badge: "Education & Certifications",
-    titleLine1: "My",
-    titleHighlight: "Learning",
-    titleLine2: "Journey",
+    titleLine1: "Education &",
+    titleHighlight: "Certifications.",
+    titleLine2: "",
     subtitle1: "Each certification represents dedication and constant evolution.",
     subtitle2: "Knowledge",
     subtitle2b: "turned into practice",
@@ -538,10 +538,14 @@ export default function CoursesSection() {
                 style={{ transformOrigin: "left" }}
               />
             </span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400">
-              {t.titleLine2}
-            </span>
+            {t.titleLine2 && (
+              <>
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400">
+                  {t.titleLine2}
+                </span>
+              </>
+            )}
           </motion.h2>
 
           <motion.p
@@ -933,22 +937,7 @@ function CourseCard({ course, index, category, copiedId, onCopy, lang, texts }: 
           </div>
         </div>
 
-        {/* Premium badge for 30h+ courses */}
-        {hours >= 30 && (
-          <div className="absolute top-3 right-3">
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", delay: 0.3 + index * 0.1 }}
-              className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30"
-            >
-              <Flame className="w-3 h-3 text-amber-500" />
-              <span className="text-[9px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                {texts.intensive}
-              </span>
-            </motion.div>
-          </div>
-        )}
+
       </motion.div>
     </TiltCard>
   );

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import GlitchTitle from "@/components/GlitchTitle";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import { Github, ExternalLink, CheckCircle2, Copy, Send, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone, Gamepad2, ArrowUpRight, MessageCircle } from "lucide-react";
+import { Github, ExternalLink, CheckCircle2, Copy, Send, ShieldCheck, Cpu, Sigma, LayoutTemplate, Zap, Search, MonitorSmartphone, ArrowUpRight, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import {
   SiReact, SiNextdotjs, SiTypescript, SiNodedotjs,
@@ -16,11 +16,9 @@ import { FaJava } from "react-icons/fa";
 import dynamic from "next/dynamic";
 
 const SkillTree = dynamic(() => import("@/components/SkillTree"));
-const TerminalProfile = dynamic(() => import("@/components/Terminal"));
 const Timeline = dynamic(() => import("@/components/Timeline"));
 const StatsSection = dynamic(() => import("@/components/StatsSection"));
-const CoursesSection = dynamic(() => import("@/components/CoursesSection"));
-const CurrentStack = dynamic(() => import("@/components/CurrentStack"));
+const WorksSection = dynamic(() => import("@/components/WorksSection"));
 const PressSection = dynamic(() => import("@/components/PressSection"));
 
 import AboutMe from "@/components/AboutMe";
@@ -29,9 +27,11 @@ import SpotifyCard from "@/components/SpotifyCard";
 import GithubStats from "@/components/GithubStats";
 import { useSound } from "@/components/SoundContext";
 import { useLanguage } from "@/components/LanguageContext";
-import SpaceShooter from "@/components/SpaceShooter";
 import ParticleBackground from "@/components/ParticleBackground";
 import ScrollToTop from "@/components/ScrollToTop";
+import SpotlightCard from "@/components/SpotlightCard";
+import MagneticButton from "@/components/MagneticButton";
+import AmbientGlow from "@/components/AmbientGlow";
 
 const techs = [
   { name: "REACT", icon: SiReact, color: "hover:text-[#61DAFB]" },
@@ -98,100 +98,13 @@ function TechCarouselRow({
   );
 }
 
-const tagData: { [key: string]: { icon: React.ElementType; color: string } } = {
-  "Next.js": { icon: SiNextdotjs, color: "hover:text-black dark:hover:text-white border-zinc-300 dark:border-white" },
-  "Node.js Architecture": { icon: SiNodedotjs, color: "hover:text-[#339933] border-[#339933]" },
-  "Security": { icon: ShieldCheck, color: "hover:text-blue-500 dark:hover:text-blue-400 border-blue-500 dark:border-blue-400" },
-  "React Advanced": { icon: SiReact, color: "hover:text-[#61DAFB] border-[#61DAFB]" },
-  "Game Loop Logic": { icon: Cpu, color: "hover:text-purple-500 dark:hover:text-purple-400 border-purple-500 dark:border-purple-400" },
-  "Math": { icon: Sigma, color: "hover:text-yellow-500 dark:hover:text-yellow-400 border-yellow-500 dark:border-yellow-400" },
-  "Frontend UX/UI": { icon: LayoutTemplate, color: "hover:text-pink-500 dark:hover:text-pink-400 border-pink-500 dark:border-pink-400" },
-  "Tailwind CSS": { icon: SiTailwindcss, color: "hover:text-[#06B6D4] border-[#06B6D4]" },
-  "Performance": { icon: Zap, color: "hover:text-orange-500 dark:hover:text-orange-400 border-orange-500 dark:border-orange-400" },
-  "SEO Technical": { icon: Search, color: "hover:text-green-600 dark:hover:text-green-400 border-green-600 dark:border-green-400" },
-  "Vercel Analytics": { icon: SiVercel, color: "hover:text-black dark:hover:text-white border-zinc-300 dark:border-white" },
-  "Responsive": { icon: MonitorSmartphone, color: "hover:text-indigo-500 dark:hover:text-indigo-400 border-indigo-500 dark:border-indigo-400" },
-};
-
-const projectMeta = [
-  {
-    id: 1,
-    tags: ["Next.js", "Node.js Architecture", "Security"],
-    color: "bg-sky-500",
-    textColor: "text-sky-600 dark:text-sky-400",
-    neonBorder: "border-sky-500/40",
-    neonShadow: "shadow-[0_0_20px_rgba(14,165,233,0.1)] dark:shadow-[0_0_20px_rgba(14,165,233,0.2)]",
-    badgeBg: "bg-sky-500/10",
-    image: "/mindhealth.png",
-    link: "https://github.com/RobsonRodriguess/Mind-Health",
-    isLive: false
-  },
-  {
-    id: 2,
-    tags: ["React Advanced", "Game Loop Logic", "Math"],
-    color: "bg-emerald-500",
-    textColor: "text-emerald-600 dark:text-emerald-400",
-    neonBorder: "border-emerald-500/40",
-    neonShadow: "shadow-[0_0_20px_rgba(16,185,129,0.1)] dark:shadow-[0_0_20px_rgba(16,185,129,0.2)]",
-    badgeBg: "bg-emerald-500/10",
-    image: "/aviator.png",
-    link: "https://github.com/RobsonRodriguess/aviator-clone-pro",
-    isLive: false
-  },
-  {
-    id: 3,
-    tags: ["Frontend UX/UI", "Tailwind CSS", "Performance"],
-    color: "bg-purple-500",
-    textColor: "text-purple-600 dark:text-purple-400",
-    neonBorder: "border-purple-500/40",
-    neonShadow: "shadow-[0_0_20px_rgba(168,85,247,0.1)] dark:shadow-[0_0_20px_rgba(168,85,247,0.2)]",
-    badgeBg: "bg-purple-500/10",
-    image: "/candangos.png",
-    link: "https://candangos-shop.vercel.app/",
-    isLive: true
-  },
-  {
-    id: 4,
-    tags: ["SEO Technical", "Vercel Analytics", "Responsive"],
-    color: "bg-orange-500",
-    textColor: "text-orange-600 dark:text-orange-400",
-    neonBorder: "border-orange-500/40",
-    neonShadow: "shadow-[0_0_20px_rgba(249,115,22,0.1)] dark:shadow-[0_0_20px_rgba(249,115,22,0.2)]",
-    badgeBg: "bg-orange-500/10",
-    image: "/gabrieladecora.png",
-    link: "https://www.gabrieladecoracoes.com.br/",
-    isLive: true
-  },
-];
-
 export default function Portfolio() {
   const [formState, setFormState] = useState<"idle" | "loading" | "success">("idle");
   const [copied, setCopied] = useState(false);
-  const [showGame, setShowGame] = useState(false);
-  const [activeProject, setActiveProject] = useState(0);
   const { playHover, playClick } = useSound();
   const { t, lang } = useLanguage();
   const { scrollYProgress: globalScroll } = useScroll();
   const scaleX = useSpring(globalScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  // Konami Code Easter Egg
-  useEffect(() => {
-    const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-    let index = 0;
-    const handle = (e: KeyboardEvent) => {
-      if (e.key === konamiCode[index]) {
-        index++;
-        if (index === konamiCode.length) {
-          setShowGame(true);
-          index = 0;
-        }
-      } else {
-        index = 0;
-      }
-    };
-    window.addEventListener("keydown", handle);
-    return () => window.removeEventListener("keydown", handle);
-  }, []);
 
   const discordID = "409017051223556121";
 
@@ -240,6 +153,7 @@ export default function Portfolio() {
       >
       <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
+      <AmbientGlow />
       <ParticleBackground />
 
       {/* Scroll progress bar */}
@@ -269,19 +183,21 @@ export default function Portfolio() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mb-12"
           >
-            <motion.a
-              href="/curriculorobson2026.pdf"
-              target="_blank"
-              onMouseEnter={playHover}
-              onClick={playClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full font-black uppercase tracking-widest text-xs md:text-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.15)] hover:shadow-green-500/20 dark:hover:shadow-green-500/30 transition-all duration-300"
-            >
-              <span className="absolute inset-0 rounded-full border border-zinc-700 dark:border-zinc-200 opacity-50 group-hover:border-green-500 transition-colors duration-300"></span>
-              {t.resume_btn}
-              <svg className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            </motion.a>
+            <MagneticButton strength={12}>
+              <motion.a
+                href="/curriculorobson2026.pdf"
+                target="_blank"
+                onMouseEnter={playHover}
+                onClick={playClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full font-black uppercase tracking-widest text-xs md:text-sm shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.15)] hover:shadow-green-500/20 dark:hover:shadow-green-500/30 transition-all duration-300"
+              >
+                <span className="absolute inset-0 rounded-full border border-zinc-700 dark:border-zinc-200 opacity-50 group-hover:border-green-500 transition-colors duration-300"></span>
+                {t.resume_btn}
+                <svg className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              </motion.a>
+            </MagneticButton>
           </motion.div>
 
           {/* Tech carousel — dual-row infinite */}
@@ -318,171 +234,13 @@ export default function Portfolio() {
 
       <AboutMe />
 
-      <section className="relative z-20 py-20 transition-colors duration-500">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="mb-20 md:mb-32">
-            <h2 className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter text-black dark:text-zinc-100">{t.works_title} <span className="text-zinc-300 dark:text-zinc-700 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(63,63,70,0.5)]">{t.works_label}</span></h2>
-            <div className="w-24 h-1 bg-zinc-300 dark:bg-zinc-800 mt-8 transition-colors duration-500"></div>
-          </motion.div>
-
-          {/* Project counter */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-4 mb-16 md:mb-24"
-          >
-            <span className="text-6xl md:text-8xl font-black text-zinc-200 dark:text-zinc-800 font-mono">{String(activeProject + 1).padStart(2, "0")}</span>
-            <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
-            <span className="text-zinc-400 dark:text-zinc-600 font-mono text-xs uppercase tracking-widest">
-              {activeProject + 1} / {projectMeta.length}
-            </span>
-          </motion.div>
-
-          {/* Active project showcase */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeProject}
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -60 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="mb-16 md:mb-24"
-            >
-              <div className="aspect-[16/9] w-full relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-white/5 bg-white dark:bg-zinc-900/50 p-2 shadow-2xl dark:shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
-                {/* Corner accents */}
-                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-lg border-zinc-300 dark:border-zinc-700 z-10" />
-                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-lg border-zinc-300 dark:border-zinc-700 z-10" />
-
-                {/* Category badge */}
-                <div className="absolute top-6 left-6 z-10">
-                  <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
-                    {t.projects[String(projectMeta[activeProject].id)].category}
-                  </span>
-                </div>
-
-                {/* Live/Source badge */}
-                <div className="absolute top-6 right-6 z-10">
-                  <span className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] bg-black/60 dark:bg-black/80 text-white border border-white/10 rounded-full backdrop-blur-sm`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${projectMeta[activeProject].isLive ? "bg-green-400 animate-pulse" : "bg-zinc-500"}`} />
-                    {projectMeta[activeProject].isLive ? t.live : t.source}
-                  </span>
-                </div>
-
-                <div className="relative w-full h-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-black">
-                  <Image
-                    src={projectMeta[activeProject].image}
-                    alt={t.projects[String(projectMeta[activeProject].id)].title}
-                    fill
-                    className="object-cover object-top grayscale-[30%] hover:grayscale-0 transition-all duration-1000"
-                  />
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Project details */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`detail-${activeProject}`}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="mb-12"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
-                {/* Title + description */}
-                <div className="lg:col-span-2">
-                  <h3 className="text-4xl md:text-6xl font-black mb-4 tracking-tighter text-black dark:text-zinc-100">
-                    {t.projects[String(projectMeta[activeProject].id)].title}
-                  </h3>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-base md:text-lg font-light leading-relaxed max-w-2xl">
-                    {t.projects[String(projectMeta[activeProject].id)].description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mt-6">
-                    {projectMeta[activeProject].tags.map((tag) => {
-                      const tagInfo = tagData[tag];
-                      if (!tagInfo)
-                        return <span key={tag} className="px-3 py-1.5 text-[10px] font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-full uppercase tracking-wider">{tag}</span>;
-                      const Icon = tagInfo.icon;
-                      return (
-                        <span key={tag} className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-white/5 rounded-full uppercase tracking-wider transition-all duration-300 hover:border-current ${tagInfo.color}`}>
-                          <Icon className="w-3 h-3" />
-                          {tag}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Action + link */}
-                <div className="flex flex-col justify-end items-start lg:items-end lg:text-right">
-                  <a
-                    href={projectMeta[activeProject].link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseEnter={playHover}
-                    onClick={playClick}
-                    className="group/btn inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-800 dark:text-zinc-100 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
-                  >
-                    {projectMeta[activeProject].isLive ? t.visit_live : t.view_source}
-                    {projectMeta[activeProject].isLive ? (
-                      <ExternalLink className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
-                    ) : (
-                      <Github className="w-4 h-4 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" />
-                    )}
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Project navigator */}
-          <div className="flex items-center gap-3 flex-wrap justify-center">
-            {projectMeta.map((project, i) => (
-              <motion.button
-                key={project.id}
-                onClick={() => { setActiveProject(i); playClick(); }}
-                onMouseEnter={playHover}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative group px-6 py-3 rounded-xl border transition-all duration-500 ${
-                  i === activeProject
-                    ? "border-zinc-400 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800/50"
-                    : "border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-zinc-300 dark:hover:border-zinc-700"
-                }`}
-              >
-                <span className={`text-[10px] font-black uppercase tracking-[0.15em] transition-colors duration-300 ${
-                  i === activeProject
-                    ? "text-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"
-                }`}>
-                  {t.projects[String(project.id)].title}
-                </span>
-                {i === activeProject && (
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-zinc-900 dark:bg-zinc-100 rounded-full" />
-                )}
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CoursesSection />
+      <WorksSection />
 
       <PressSection />
 
       <StatsSection />
-      <TerminalProfile />
       <Timeline />
       <SkillTree />
-
-      <CurrentStack />
 
       {/* Code Rhythm Section */}
       <section className="py-24 relative z-20 overflow-hidden transition-colors duration-500">
@@ -720,21 +478,6 @@ export default function Portfolio() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="text-center mb-20 md:mb-28"
           >
-            {/* Status badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/60 dark:bg-white/[0.04] border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl mb-10 shadow-sm"
-            >
-              <div className="relative">
-                <span className="absolute inset-0 w-2.5 h-2.5 bg-green-500 rounded-full animate-ping opacity-30" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-              </div>
-              <span className="text-green-600 dark:text-green-400 font-semibold text-xs uppercase tracking-widest">{t.available}</span>
-            </motion.div>
-
             {/* Big title */}
             <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter text-zinc-900 dark:text-white leading-[0.85] mb-8">
               {lang === 'en' ? "LET'S" : "VAMOS"}{" "}
@@ -1076,16 +819,6 @@ export default function Portfolio() {
                 </span>
               </motion.div>
 
-              {/* Center: easter egg button */}
-              <button
-                onClick={() => { setShowGame(true); playClick(); }}
-                onMouseEnter={playHover}
-                className="group flex items-center gap-2.5 text-[10px] font-mono tracking-[0.15em] uppercase text-zinc-400 dark:text-zinc-700 hover:text-green-500 dark:hover:text-green-500 transition-all duration-300 cursor-pointer px-4 py-2 rounded-lg hover:bg-green-500/[0.04]"
-              >
-                <Gamepad2 className="w-3.5 h-3.5 group-hover:animate-bounce" />
-                {t.void_defender}
-              </button>
-
               {/* Right: social mini icons */}
               <div className="flex items-center gap-3">
                 {[
@@ -1124,10 +857,6 @@ export default function Portfolio() {
       </footer>
       <FloatingSpotify />
       <ScrollToTop />
-
-      <AnimatePresence>
-        {showGame && <SpaceShooter onClose={() => setShowGame(false)} />}
-      </AnimatePresence>
     </motion.main>
     </>
   );
