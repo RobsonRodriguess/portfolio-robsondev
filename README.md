@@ -2,23 +2,22 @@
 
 Portfólio pessoal e showcase de projetos desenvolvido por **Robson Rodrigues**, Engenheiro de Software & Desenvolvedor Fullstack baseado em Brasília, DF.
 
-Construído com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS** e **Framer Motion**, com foco em performance, experiência do usuário e design interativo.
+Construído com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS v4** e **Framer Motion**, com foco em engenharia limpa, alta performance, acessibilidade e experiência de usuário.
 
 🌐 **Acesse online:** [robsondev.vercel.app](https://robsondev.vercel.app)
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Destaques do Projeto
 
-- **Showcase Interativo de Projetos:** Transições cinematográficas com desfoque de movimento, cartões 3D tilt e links para aplicações em produção.
-- **Skill Constellation:** Grafo interativo de arquitetura e competências conectando frontend, backend, bancos de dados e cloud com inspetor de telemetria.
-- **Career Timeline:** Linha de trajetória profissional com condutor de laser iluminado pelo scroll e cartões técnicos expansíveis.
-- **Integração com Spotify:** Widget e card com status de reprodução em tempo real (*Now Playing*) via Spotify Web API.
-- **Estatísticas do GitHub:** Integração direta com a API do GitHub para exibir linguagens mais utilizadas, repositórios e atividade recente.
-- **Internacionalização (i18n):** Suporte a múltiplos idiomas (Português e Inglês) via Context API.
-- **Dark / Light Mode:** Alternância de temas fluida com persistência através de `next-themes`.
-- **Efeitos Sonoros e Animações:** Micro-interações táteis opcionais com controle de áudio, além de animações fluidas com Framer Motion.
-- **OpenGraph Dinâmico:** Geração automatizada de imagens sociais via `@vercel/og` para compartilhamento em redes sociais.
+- **Showcase de Projetos:** Grid editorial 2x2 com foco no essencial, screenshots reais das aplicações em produção, tags de tecnologias e links diretos para plataformas no ar e repositórios.
+- **Matriz de Arquitetura & Especialidades:** Painel interativo de competências técnicas categorizadas (Frontend, Backend, Bancos de Dados e DevOps) com inspeção detalhada de aplicações em produção.
+- **Career Timeline:** Trajetória profissional e acadêmica com indicador interativo e detalhamento de entregas.
+- **Internacionalização Nativa (i18n):** Suporte completo e dinâmico a múltiplos idiomas (Português e Inglês) via Context API.
+- **Integração Spotify em Tempo Real:** Widget e card conectado à API oficial do Spotify exibindo a faixa em reprodução no momento (*Now Playing*).
+- **Dark / Light Mode:** Alternância fluida de temas sem flash de estilos (FOUC), persistida via `next-themes`.
+- **Performance & SEO:** Otimização para Core Web Vitals, metadados dinâmicos e geração automatizada de OpenGraph via `@vercel/og`.
+- **Observabilidade:** Monitoramento e telemetria integrados com `@vercel/analytics` e `@vercel/speed-insights`.
 
 ---
 
@@ -30,8 +29,8 @@ Construído com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS** e **F
 - **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Animações:** [Framer Motion](https://www.framer.com/motion/)
 - **Ícones:** [Lucide React](https://lucide.dev/) & [React Icons](https://react-icons.github.io/react-icons/)
-- **Analytics & Observabilidade:** [@vercel/analytics](https://vercel.com/analytics) & [@vercel/speed-insights](https://vercel.com/docs/speed-insights)
-- **Deploy:** [Vercel](https://vercel.com/)
+- **Observabilidade:** [@vercel/analytics](https://vercel.com/analytics) & [@vercel/speed-insights](https://vercel.com/docs/speed-insights)
+- **Deploy & Infra:** [Vercel](https://vercel.com/)
 
 ---
 
@@ -43,78 +42,21 @@ src/
 │   ├── api/                  # Endpoints serverless (Spotify, GitHub, Contato)
 │   ├── globals.css           # Estilos globais e tokens Tailwind
 │   ├── layout.tsx            # Root layout, providers e metadados SEO/OG
-│   ├── page.tsx              # Página principal e seções do portfólio
+│   ├── page.tsx              # Página principal do portfólio
 │   ├── opengraph-image.tsx   # Geração dinâmica da imagem OpenGraph
 │   ├── sitemap.ts            # Geração do sitemap.xml
 │   └── robots.ts             # Configuração do robots.txt
-└── components/               # Componentes reutilizáveis e interativos
-    ├── AboutMe.tsx
-    ├── CoursesSection.tsx
-    ├── CurrentStack.tsx
-    ├── FloatingSpotify.tsx
-    ├── GithubStats.tsx
-    ├── GlitchTitle.tsx
-    ├── LanguageContext.tsx
-    ├── SpaceShooter.tsx
-    ├── SpotifyCard.tsx
-    ├── Terminal.tsx
-    └── Timeline.tsx
+└── components/               # Componentes modulares
+    ├── AboutMe.tsx           # Seção sobre mim
+    ├── WorksSection.tsx      # Showcase de projetos selecionados
+    ├── SkillTree.tsx         # Matriz interativa de arquitetura e competências
+    ├── Timeline.tsx          # Linha do tempo de carreira e formação
+    ├── StatsSection.tsx      # Métricas e estatísticas
+    ├── FloatingSpotify.tsx   # Player flutuante do Spotify
+    ├── SpotifyCard.tsx       # Card musical com Now Playing
+    ├── ThemeToggle.tsx       # Alternador de tema (Dark/Light)
+    └── LanguageToggle.tsx    # Alternador de idioma (PT/EN)
 ```
-
----
-
-## ⚙️ Variáveis de Ambiente
-
-Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
-
-```env
-# URL base do site
-NEXT_PUBLIC_SITE_URL=https://robsondev.vercel.app
-
-# Integração Web3Forms (Formulário de Contato)
-WEB3FORMS_ACCESS_KEY=sua_chave_web3forms
-
-# Integração GitHub API (Opcional, aumenta o rate-limit)
-GITHUB_ACCESS_TOKEN=seu_github_personal_access_token
-
-# Integração Spotify (Now Playing)
-SPOTIFY_CLIENT_ID=seu_client_id
-SPOTIFY_CLIENT_SECRET=seu_client_secret
-SPOTIFY_REFRESH_TOKEN=seu_refresh_token
-```
-
----
-
-## 💻 Como Rodar Localmente
-
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/RobsonRodriguess/portfolio-robsondev.git
-   cd portfolio-robsondev
-   ```
-
-2. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-
-4. Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
-
----
-
-## 📦 Scripts Disponíveis
-
-| Comando | Descrição |
-| --- | --- |
-| `npm run dev` | Inicia o servidor local de desenvolvimento |
-| `npm run build` | Compila o projeto otimizado para produção |
-| `npm run start` | Inicia a build de produção localmente |
-| `npm run lint` | Executa a verificação estática de código com ESLint |
 
 ---
 
@@ -122,5 +64,6 @@ SPOTIFY_REFRESH_TOKEN=seu_refresh_token
 
 **Robson Rodrigues**  
 - GitHub: [@RobsonRodriguess](https://github.com/RobsonRodriguess)  
+- LinkedIn: [Robson Rodrigues](https://www.linkedin.com/in/robson-rodrigues-dev)  
 - Localização: Brasília, DF — Brasil  
 - Portfólio: [robsondev.vercel.app](https://robsondev.vercel.app)
