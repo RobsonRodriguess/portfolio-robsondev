@@ -58,12 +58,18 @@ export default function FloatingSpotify() {
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
               className="w-full h-full"
             >
-              <Image 
-                src={data.albumImageUrl || ""} 
-                alt={data.title || "Capa"} 
-                fill 
-                className="object-cover"
-              />
+              {data.albumImageUrl ? (
+                <Image 
+                  src={data.albumImageUrl} 
+                  alt={data.title || "Capa"} 
+                  fill 
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
+                  <Music2 className="w-5 h-5 text-green-500" />
+                </div>
+              )}
             </motion.div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-[#121212] rounded-full border border-zinc-800"></div>
           </div>

@@ -128,12 +128,16 @@ export default function SpotifyCard() {
                 ))}
                 {/* Label */}
                 <div className="absolute inset-[32%] rounded-full overflow-hidden border border-white/5">
-                  <Image
-                    src={data.albumImageUrl}
-                    alt="vinyl label"
-                    fill
-                    className="object-cover opacity-30 blur-[1px]"
-                  />
+                  {data.albumImageUrl ? (
+                    <Image
+                      src={data.albumImageUrl}
+                      alt="vinyl label"
+                      fill
+                      className="object-cover opacity-30 blur-[1px]"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-zinc-800" />
+                  )}
                 </div>
                 {/* Center spindle */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4">
@@ -153,13 +157,19 @@ export default function SpotifyCard() {
           >
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-green-500/10 via-transparent to-purple-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="relative w-full h-full rounded-xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.06)]">
-              <Image
-                src={data.albumImageUrl}
-                alt={data.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                priority
-              />
+              {data.albumImageUrl ? (
+                <Image
+                  src={data.albumImageUrl}
+                  alt={data.title || "Album Cover"}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
+                  <Music className="w-10 h-10 text-green-500" />
+                </div>
+              )}
               {/* Shine reflection */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none rounded-xl" />
             </div>

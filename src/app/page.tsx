@@ -13,13 +13,11 @@ import {
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
 
-import dynamic from "next/dynamic";
-
-const SkillTree = dynamic(() => import("@/components/SkillTree"));
-const Timeline = dynamic(() => import("@/components/Timeline"));
-const StatsSection = dynamic(() => import("@/components/StatsSection"));
-const WorksSection = dynamic(() => import("@/components/WorksSection"));
-const PressSection = dynamic(() => import("@/components/PressSection"));
+import SkillTree from "@/components/SkillTree";
+import Timeline from "@/components/Timeline";
+import StatsSection from "@/components/StatsSection";
+import WorksSection from "@/components/WorksSection";
+import PressSection from "@/components/PressSection";
 
 import AboutMe from "@/components/AboutMe";
 import FloatingSpotify from "@/components/FloatingSpotify";
@@ -151,7 +149,7 @@ export default function Portfolio() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500"
       >
-      <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('/noise.svg')]"></div>
 
       <AmbientGlow />
       <ParticleBackground />
@@ -217,14 +215,14 @@ export default function Portfolio() {
                 techs={[techs[0], techs[1], techs[2], techs[3], techs[4], techs[5], techs[6], techs[7]]}
                 direction={1}
                 speed={50}
-                gap="40"
+                gap="40px"
               />
               {/* Row 2 — right */}
               <TechCarouselRow
                 techs={[techs[8], techs[9], techs[10], techs[11], techs[12], techs[13], techs[14], techs[15]]}
                 direction={-1}
                 speed={60}
-                gap="48"
+                gap="48px"
               />
             </div>
           </motion.div>
@@ -282,8 +280,8 @@ export default function Portfolio() {
                       key={i}
                       className="w-[2px] bg-gradient-to-t from-green-500 to-sky-500 rounded-full origin-bottom"
                       style={{ height: "100%" }}
-                      animate={{ scaleY: [0.15, 0.3 + Math.random() * 0.7, 0.15] }}
-                      transition={{ duration: 1.5 + Math.random() * 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
+                      animate={{ scaleY: [0.15, 0.3 + ((i * 13) % 7) * 0.1, 0.15] }}
+                      transition={{ duration: 1.5 + ((i * 17) % 5) * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
                     />
                   ))}
                 </div>

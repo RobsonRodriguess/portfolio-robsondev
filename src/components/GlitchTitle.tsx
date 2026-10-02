@@ -20,7 +20,14 @@ const rand = () => CHARS[Math.floor(Math.random() * CHARS.length)];
 
 const playSFX = () => {
   try {
-    const c = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (typeof window === "undefined") return;
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtx) return;
+    const c = new AudioCtx();
+    if (c.state === "suspended") {
+      c.close().catch(() => {});
+      return;
+    }
     const o = c.createOscillator();
     const g = c.createGain();
     o.type = "square";

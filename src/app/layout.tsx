@@ -13,7 +13,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://robsondev.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://meu-portfolio-robsonrodrigues.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

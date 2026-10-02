@@ -279,16 +279,24 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Lang>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('lang') as Lang | null;
-    if (saved && (saved === 'en' || saved === 'pt')) {
-      setLang(saved);
+    try {
+      const saved = localStorage.getItem('lang') as Lang | null;
+      if (saved && (saved === 'en' || saved === 'pt')) {
+        setLang(saved);
+      }
+    } catch {
+      // In mobile private mode or restricted contexts, localStorage may throw
     }
   }, []);
 
   const toggleLang = useCallback(() => {
     setLang(prev => {
       const next = prev === 'en' ? 'pt' : 'en';
-      localStorage.setItem('lang', next);
+      try {
+        localStorage.setItem('lang', next);
+      } catch {
+        // Ignore storage errors on mobile
+      }
       return next;
     });
   }, []);
