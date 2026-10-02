@@ -102,7 +102,6 @@ export default function Portfolio() {
   const { playHover, playClick } = useSound();
   const { t, lang } = useLanguage();
   const { scrollYProgress: globalScroll } = useScroll();
-  const scaleX = useSpring(globalScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const discordID = "409017051223556121";
 
@@ -143,12 +142,7 @@ export default function Portfolio() {
 
   return (
     <>
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500"
-      >
+      <main className="bg-zinc-50 dark:bg-[#0a0a0a] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800/50 min-h-screen transition-colors duration-500">
       <div className="fixed inset-0 z-[1] opacity-[0.03] dark:opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('/noise.svg')]"></div>
 
       <AmbientGlow />
@@ -157,23 +151,18 @@ export default function Portfolio() {
       {/* Scroll progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-sky-500 to-purple-500 origin-left z-[100] rounded-full shadow-[0_0_12px_rgba(34,197,94,0.4)]"
-        style={{ scaleX, opacity: globalScroll }}
+        style={{ scaleX: globalScroll }}
       />
 
       <section className="min-h-screen w-full flex flex-col items-center justify-center relative z-10 px-6 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-zinc-300/50 dark:bg-zinc-800/20 blur-[150px] rounded-full pointer-events-none animate-pulse duration-[7000ms]"></div>
-        <motion.div className="relative z-20 text-center flex flex-col items-center w-full max-w-7xl">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-zinc-600 dark:text-zinc-400 uppercase tracking-[0.2em] text-sm md:text-base mb-8 font-mono">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-zinc-300/40 dark:bg-zinc-800/20 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="relative z-20 text-center flex flex-col items-center w-full max-w-7xl">
+          <p className="text-zinc-600 dark:text-zinc-400 uppercase tracking-[0.2em] text-sm md:text-base mb-8 font-mono">
             <span className="text-sky-500 dark:text-sky-400 mr-2">&lt;</span>{t.hero_badge}<span className="text-sky-500 dark:text-sky-400 ml-2">/&gt;</span>
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-7xl md:text-[9rem] font-black tracking-tighter leading-[0.9] mb-10 drop-shadow-xl dark:drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] text-black dark:text-white"
-          >
+          </p>
+          <h1 className="text-7xl md:text-[9rem] font-black tracking-tighter leading-[0.9] mb-10 drop-shadow-xl dark:drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] text-black dark:text-white">
             <GlitchTitle />
-          </motion.h1>
+          </h1>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -229,7 +218,7 @@ export default function Portfolio() {
             </div>
           </motion.div>
 
-        </motion.div>
+        </div>
       </section>
 
       <AboutMe />
@@ -842,7 +831,7 @@ export default function Portfolio() {
       </footer>
       <FloatingSpotify />
       <ScrollToTop />
-    </motion.main>
+    </main>
     </>
   );
 }

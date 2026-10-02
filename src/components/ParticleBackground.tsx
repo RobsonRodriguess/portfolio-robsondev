@@ -46,17 +46,18 @@ export default function ParticleBackground() {
   );
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let isMobile = window.innerWidth < 768;
+    let isMobile = false;
     const resize = () => {
       if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      isMobile = window.innerWidth < 768;
       particlesRef.current = initParticles(canvas.width, canvas.height);
     };
     resize();
@@ -187,7 +188,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
+      className="hidden md:block fixed inset-0 z-0 pointer-events-none"
       style={{ opacity: 0.8 }}
     />
   );

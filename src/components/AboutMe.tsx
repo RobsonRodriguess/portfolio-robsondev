@@ -129,9 +129,9 @@ export default function AboutMe() {
                 {/* Animated gradient border */}
                 <div className="absolute -inset-[2px] rounded-[2rem] bg-gradient-to-br from-green-500 via-sky-500 to-purple-500 opacity-40 group-hover/photo:opacity-80 group-hover/photo:scale-[1.01] blur-sm transition-all duration-700" />
                 <div className="absolute -inset-[2px] rounded-[2rem] bg-gradient-to-br from-green-500 via-sky-500 to-purple-500 opacity-40 group-hover/photo:opacity-80 group-hover/photo:scale-[1.01] transition-all duration-700" />
-                {/* Rotating border animation */}
-                <motion.div
-                  className="absolute -inset-[2px] rounded-[2rem] opacity-60"
+                {/* Rotating border animation - CSS GPU accelerated on desktop */}
+                <div
+                  className="hidden md:block absolute -inset-[2px] rounded-[2rem] opacity-60 pointer-events-none will-change-transform animate-[spin_8s_linear_infinite]"
                   style={{
                     background: "conic-gradient(from 0deg, #22c55e, #0ea5e9, #a855f7, #22c55e)",
                     mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
@@ -140,8 +140,6 @@ export default function AboutMe() {
                     WebkitMaskComposite: "xor",
                     padding: "2px",
                   }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
                 />
 
                 <div className="relative rounded-[2rem] overflow-hidden bg-zinc-900 aspect-[4/5]">

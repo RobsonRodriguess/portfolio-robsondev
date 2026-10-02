@@ -117,10 +117,12 @@ export default function GlitchTitle() {
   }, [cancelAll, addT]);
 
   useEffect(() => {
-    // Run an initial brief decode after 800ms
+    // Skip automatic scramble on mobile to keep TBT at 0ms and preserve battery
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+
     const t = setTimeout(() => {
       triggerScramble(true);
-    }, 800);
+    }, 1000);
     return () => {
       clearTimeout(t);
       cancelAll();

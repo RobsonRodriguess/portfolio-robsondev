@@ -62,8 +62,8 @@ export default function SpotifyCard() {
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes idleWave {
-              0%, 100% { height: 4px; }
-              50% { height: 22px; }
+              0%, 100% { transform: scaleY(0.18); }
+              50% { transform: scaleY(1); }
             }
           `
         }} />
@@ -71,9 +71,9 @@ export default function SpotifyCard() {
           {Array.from({ length: 16 }).map((_, i) => (
             <div
               key={i}
-              className="w-1 bg-green-500/30 rounded-full"
+              className="w-1 bg-green-500/30 rounded-full origin-bottom will-change-transform"
               style={{
-                height: `${6 + (i % 4) * 3}px`,
+                height: "22px",
                 animation: `idleWave 1.6s ease-in-out infinite ${(i * 0.08).toFixed(2)}s`,
               }}
             />
