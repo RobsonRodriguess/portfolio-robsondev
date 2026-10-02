@@ -276,13 +276,23 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>('en');
+  const [lang, setLang] = useState<Lang>('pt');
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem('lang') as Lang | null;
       if (saved && (saved === 'en' || saved === 'pt')) {
         setLang(saved);
+        if (typeof document !== 'undefined') {
+          document.documentElement.lang = saved;
+        }
+      } else {
+        const browserLang = typeof navigator !== 'undefined' ? navigator.language?.toLowerCase() : '';
+        const initial = browserLang && !browserLang.startsWith('pt') ? 'en' : 'pt';
+        setLang(initial);
+        if (typeof document !== 'undefined') {
+          document.documentElement.lang = initial;
+        }
       }
     } catch {
       // In mobile private mode or restricted contexts, localStorage may throw
@@ -296,6 +306,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('lang', next);
       } catch {
         // Ignore storage errors on mobile
+      }
+      if (typeof document !== 'undefined') {
+        document.documentElement.lang = next;
       }
       return next;
     });

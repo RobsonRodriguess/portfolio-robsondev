@@ -29,7 +29,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col items-center justify-center p-6 text-center">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col items-center justify-center p-6 text-center notranslate" translate="no">
       <div className="max-w-md w-full p-8 rounded-3xl bg-zinc-900/60 border border-zinc-800 shadow-2xl backdrop-blur-xl">
         <div className="w-14 h-14 mx-auto mb-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
           <AlertTriangle className="w-7 h-7" />
@@ -54,7 +54,8 @@ export default function ErrorBoundary({
               sessionStorage.removeItem("chunk_reload");
               reset();
             }}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors cursor-pointer"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors cursor-pointer notranslate"
+            translate="no"
           >
             <RefreshCw className="w-4 h-4" />
             Tentar novamente
@@ -64,7 +65,8 @@ export default function ErrorBoundary({
               sessionStorage.removeItem("chunk_reload");
               window.location.href = "/";
             }}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider hover:bg-zinc-700 transition-colors cursor-pointer"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-800 text-white font-bold text-xs uppercase tracking-wider hover:bg-zinc-700 transition-colors cursor-pointer notranslate"
+            translate="no"
           >
             <Home className="w-4 h-4" />
             Início

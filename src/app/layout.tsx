@@ -81,6 +81,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   category: "technology",
+  other: {
+    google: "notranslate",
+  },
 };
 
 export default function RootLayout({
@@ -89,8 +92,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="pt" translate="no" className="notranslate" suppressHydrationWarning>
+      <head>
+        <meta name="google" content="notranslate" />
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Protect React against Google Translate and browser extensions mutating DOM nodes
+              if (typeof window !== "undefined" && typeof Node !== "undefined") {
+                var origRemoveChild = Node.prototype.removeChild;
+                Node.prototype.removeChild = function (child) {
+                  if (child && child.parentNode && child.parentNode !== this) {
+                    return child.parentNode.removeChild(child);
+                  }
+                  return origRemoveChild.call(this, child);
+                };
+                var origInsertBefore = Node.prototype.insertBefore;
+                Node.prototype.insertBefore = function (newNode, refNode) {
+                  if (refNode && refNode.parentNode && refNode.parentNode !== this) {
+                    return refNode.parentNode.insertBefore(newNode, refNode);
+                  }
+                  return origInsertBefore.call(this, newNode, refNode);
+                };
+              }
+            `,
+          }}
+        />
+      </head>
+      <body className={`${inter.className} notranslate`} translate="no">
         <JsonLd />
         <ThemeProvider
           attribute="class"
