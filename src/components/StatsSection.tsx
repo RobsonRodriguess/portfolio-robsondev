@@ -10,29 +10,36 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const counted = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 0.85"],
-  });
 
   useEffect(() => {
-    const unsub = scrollYProgress.on("change", (v) => {
-      if (v > 0 && !counted.current && ref.current) {
-        counted.current = true;
-        const duration = 2000;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const elapsed = now - start;
-          const t = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - t, 4);
-          ref.current!.textContent = String(Math.round(eased * value));
-          if (t < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    });
-    return () => unsub();
-  }, [value, scrollYProgress]);
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !counted.current && ref.current) {
+          counted.current = true;
+          const duration = 1600;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const elapsed = now - start;
+            const t = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - t, 4);
+            if (ref.current) {
+              ref.current.textContent = String(Math.round(eased * value));
+            }
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value]);
 
   return (
     <div ref={containerRef} className="flex items-baseline">
@@ -60,18 +67,12 @@ function StatCard({
   icon: React.ReactNode;
   index: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.85"],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 0.4], [50, 0]);
-
   return (
     <motion.div
-      ref={ref}
-      style={{ opacity, y }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
       className="flex flex-col items-center gap-3 group"
     >
       <CountUp value={value} suffix={suffix} />

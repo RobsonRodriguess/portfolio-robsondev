@@ -14,6 +14,7 @@ export default function AmbientGlow() {
   const springY = useSpring(mouseY, { damping: 30, stiffness: 80, mass: 0.8 });
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     setMounted(true);
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -36,7 +37,7 @@ export default function AmbientGlow() {
         translateX: "-50%",
         translateY: "-50%",
       }}
-      className="pointer-events-none fixed top-0 left-0 w-[550px] h-[550px] rounded-full z-0 opacity-20 dark:opacity-25 blur-[120px] transition-opacity duration-700 will-change-transform bg-gradient-to-tr from-sky-500/30 via-emerald-500/20 to-purple-500/30"
+      className="hidden md:block pointer-events-none fixed top-0 left-0 w-[550px] h-[550px] rounded-full z-0 opacity-20 dark:opacity-25 blur-[120px] transition-opacity duration-700 will-change-transform bg-gradient-to-tr from-sky-500/30 via-emerald-500/20 to-purple-500/30"
     />
   );
 }

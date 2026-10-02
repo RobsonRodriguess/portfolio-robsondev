@@ -62,7 +62,7 @@ function TechCarouselRow({
   speed: number;
   gap: string;
 }) {
-  const repeated = [...rowTechs, ...rowTechs, ...rowTechs, ...rowTechs, ...rowTechs, ...rowTechs];
+  const repeated = [...rowTechs, ...rowTechs, ...rowTechs];
   const animName = `marquee-tech-${direction}-${speed}`;
 
   return (
@@ -74,8 +74,8 @@ function TechCarouselRow({
           100% { transform: translateX(${direction === 1 ? '-33.33333%' : '0%'}); }
         }
       `}} />
-      <motion.div
-        className="flex items-center"
+      <div
+        className="flex items-center will-change-transform"
         style={{ animation: `${animName} ${speed}s linear infinite` }}
       >
         {repeated.map((tech, index) => (
@@ -84,14 +84,14 @@ function TechCarouselRow({
             className="flex items-center cursor-pointer group/tech"
             style={{ marginLeft: gap }}
           >
-            <div className="relative px-5 py-3.5 rounded-2xl bg-zinc-100/80 dark:bg-zinc-900/40 border border-zinc-200/60 dark:border-white/[0.04] backdrop-blur-sm hover:border-zinc-300 dark:hover:border-white/10 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div className="relative px-5 py-3.5 rounded-2xl bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/70 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/20 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <tech.icon
                 className={`w-8 h-8 text-zinc-400 dark:text-zinc-500 transition-all duration-300 group-hover/tech:scale-125 ${tech.color}`}
               />
             </div>
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -209,7 +209,9 @@ export default function Portfolio() {
             <div className="absolute top-0 left-10 right-10 h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
             <div className="absolute bottom-0 left-10 right-10 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
 
-            <div className="overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+            <div className="relative overflow-hidden">
+              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 md:w-24 z-10 bg-gradient-to-r from-zinc-50 dark:from-[#0a0a0a] to-transparent" />
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 md:w-24 z-10 bg-gradient-to-l from-zinc-50 dark:from-[#0a0a0a] to-transparent" />
               {/* Row 1 — left */}
               <TechCarouselRow
                 techs={[techs[0], techs[1], techs[2], techs[3], techs[4], techs[5], techs[6], techs[7]]}
@@ -255,58 +257,43 @@ export default function Portfolio() {
             <div className="absolute -inset-[1px] rounded-[2.6rem] bg-gradient-to-br from-green-500/30 via-sky-500/10 to-purple-500/30 opacity-50 group-hover:opacity-100 transition-opacity duration-1000" />
 
             <div className="relative bg-zinc-50/80 dark:bg-zinc-950/90 backdrop-blur-3xl rounded-[2.5rem] p-8 md:p-12 lg:p-16 overflow-hidden border border-zinc-200/50 dark:border-white/5 transition-colors duration-500">
-              {/* Animated background orbs */}
+              {/* Background ambient orbs — pure CSS for zero CPU load */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <motion.div
-                  className="absolute -top-20 -left-20 w-96 h-96 bg-green-500/[0.04] rounded-full blur-3xl"
-                  animate={{ scale: [1, 1.3, 1], x: [0, 30, 0], y: [0, -20, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                  className="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-500/[0.04] rounded-full blur-3xl"
-                  animate={{ scale: [1, 1.4, 1], x: [0, -40, 0], y: [0, 20, 0] }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                />
-                <motion.div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-500/[0.03] rounded-full blur-3xl"
-                  animate={{ scale: [1, 1.5, 1], rotate: [0, 90, 180] }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                />
+                <div className="absolute -top-20 -left-20 w-96 h-96 bg-green-500/[0.04] rounded-full blur-3xl" />
+                <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-500/[0.04] rounded-full blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-500/[0.03] rounded-full blur-3xl" />
 
-                {/* Sound wave lines */}
-                <div className="absolute bottom-0 left-0 right-0 h-32 flex items-end justify-center gap-[2px] opacity-[0.03]">
-                  {Array.from({ length: 80 }).map((_, i) => (
-                    <motion.div
+                {/* Sound wave lines — pure CSS animation for smooth 60fps without main thread blocking */}
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                    @keyframes soundWaveBar {
+                      0%, 100% { transform: scaleY(0.2); }
+                      50% { transform: scaleY(0.85); }
+                    }
+                  `
+                }} />
+                <div className="absolute bottom-0 left-0 right-0 h-28 flex items-end justify-center gap-1 opacity-[0.04]">
+                  {Array.from({ length: 32 }).map((_, i) => (
+                    <div
                       key={i}
                       className="w-[2px] bg-gradient-to-t from-green-500 to-sky-500 rounded-full origin-bottom"
-                      style={{ height: "100%" }}
-                      animate={{ scaleY: [0.15, 0.3 + ((i * 13) % 7) * 0.1, 0.15] }}
-                      transition={{ duration: 1.5 + ((i * 17) % 5) * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
+                      style={{
+                        height: "100%",
+                        animation: `soundWaveBar ${1.3 + ((i * 7) % 5) * 0.3}s ease-in-out infinite ${(i * 0.06).toFixed(2)}s`,
+                      }}
                     />
                   ))}
                 </div>
 
-                {/* Floating musical notes — cleaner */}
+                {/* Floating musical notes */}
                 {["♪", "♫", "♬", "♩"].map((note, i) => (
-                  <motion.div
+                  <div
                     key={i}
                     className="absolute text-green-500/[0.05] text-3xl select-none"
-                    animate={{
-                      y: [-20, -60, -20],
-                      x: [0, i % 2 === 0 ? 10 : -10, 0],
-                      opacity: [0, 0.3, 0],
-                      rotate: [0, i % 2 === 0 ? 15 : -15, 0],
-                    }}
-                    transition={{
-                      duration: 6 + i * 1.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: i * 1.5,
-                    }}
                     style={{ left: `${15 + i * 22}%`, top: `${20 + (i % 2) * 30}%` }}
                   >
                     {note}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 

@@ -30,7 +30,7 @@ export default function FloatingSpotify() {
 
   useEffect(() => {
     fetchNowPlaying();
-    const interval = setInterval(fetchNowPlaying, 10000); // Atualiza a cada 10 segundos
+    const interval = setInterval(fetchNowPlaying, 20000); // Atualiza a cada 20 segundos
     return () => clearInterval(interval);
   }, []);
 

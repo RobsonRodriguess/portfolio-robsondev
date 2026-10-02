@@ -24,7 +24,7 @@ export default function SpotifyCard() {
 
   useEffect(() => {
     fetchNowPlaying();
-    const interval = setInterval(fetchNowPlaying, 5000);
+    const interval = setInterval(fetchNowPlaying, 15000);
     return () => clearInterval(interval);
   }, []);
 
@@ -58,14 +58,24 @@ export default function SpotifyCard() {
     >
       <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-green-500/10 to-transparent opacity-50 group-hover:opacity-80 blur-sm transition-opacity duration-700" />
       <div className="relative border border-white/5 bg-zinc-900/40 text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] text-center italic p-10 rounded-[2.5rem] backdrop-blur-xl overflow-hidden">
-        {/* Idle waveform */}
+        {/* Idle waveform with pure CSS compositor animation */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes idleWave {
+              0%, 100% { height: 4px; }
+              50% { height: 22px; }
+            }
+          `
+        }} />
         <div className="flex items-end justify-center gap-1 mb-6 h-8">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div
               key={i}
               className="w-1 bg-green-500/30 rounded-full"
-              animate={{ height: [4, 8 + Math.sin(i * 0.5) * 12 + 8, 4] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
+              style={{
+                height: `${6 + (i % 4) * 3}px`,
+                animation: `idleWave 1.6s ease-in-out infinite ${(i * 0.08).toFixed(2)}s`,
+              }}
             />
           ))}
         </div>
